@@ -2,6 +2,7 @@ const GEOCODING_URL = "https://geocoding-api.open-meteo.com/v1/search";
 
 const WEATHER_URL = "https://api.open-meteo.com/v1/forecast";
 
+// Find possible places that match what the user has typed.
 export async function searchLocations(query) {
   const geoParams = new URLSearchParams({
     name: query,
@@ -20,6 +21,7 @@ export async function searchLocations(query) {
   return geoData.results ?? [];
 }
 
+// Fetch the forecast by exact coordinates or geocode a plain city name first.
 export async function fetchWeather(locationOrName) {
   let location = locationOrName;
 
@@ -57,6 +59,7 @@ export async function fetchWeather(locationOrName) {
 
   const weatherData = await weatherResponse.json();
 
+  // Return both the selected place and weather so the UI can show its name and conditions.
   return {
     location,
     weather: weatherData,

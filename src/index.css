@@ -1,3 +1,4 @@
+/* Shared theme tokens and typography defaults. */
 :root {
   font-family: "Trebuchet MS", "Avenir Next", sans-serif;
   color: #23332b;
@@ -18,6 +19,7 @@
   --sun: #e1ad5f;
 }
 
+/* Base sizing and visible keyboard focus across the application. */
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; min-height: 100vh; }
 button, input { font: inherit; }

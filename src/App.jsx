@@ -3,6 +3,7 @@ import { Link, NavLink, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { fetchWeather, searchLocations } from "./services/WeatherApi";
 
+// Open-Meteo weather codes are translated into short labels and symbols for the forecast UI.
 const weatherDescriptions = {
   0: "Clear sky",
   1: "Mostly clear",
@@ -59,6 +60,7 @@ function getWeatherSymbol(code) {
   return weatherSymbols[code] ?? "◌";
 }
 
+// Restore the last selected place, supporting both saved coordinates and older saved city names.
 function readSavedLocation() {
   const savedLocation = localStorage.getItem("agricast-location");
   if (!savedLocation) return null;
@@ -76,9 +78,11 @@ function readSavedLocation() {
 }
 
 function formatLocationLabel(location) {
+  // Combine region details so suggestions distinguish places with similar names.
   return [location.name, location.admin1, location.country].filter(Boolean).join(", ");
 }
 
+// Turn the next five days of rain and temperature data into a cautious general planting note.
 function getPlantingAdvice(weather) {
   const rain = weather.daily.precipitation_sum.slice(0, 5).reduce((sum, amount) => sum + amount, 0);
   const averageHigh = weather.daily.temperature_2m_max
@@ -132,6 +136,7 @@ function formatDay(date, index) {
   });
 }
 
+// Shared header links let users move between the forecast and the project explanation.
 function SiteHeader() {
   return (
     <header className="topbar">
@@ -148,6 +153,7 @@ function SiteHeader() {
   );
 }
 
+// Shared footer keeps the attribution and forecast disclaimer visible on every route.
 function SiteFooter() {
   return (
     <footer className="site-footer">
@@ -157,9 +163,11 @@ function SiteFooter() {
   );
 }
 
+// Explain the problem, Phase 1 scope, walkthrough, and weather API decisions.
 function ProjectStory() {
   return (
     <main className="project-page">
+      {/* Introduce Agricast and link back to its live forecast. */}
       <section className="project-intro">
         <p className="eyebrow">PROJECT NOTES <span>/ PHASE 01</span></p>
         <h1>Weather context for the next field decision.</h1>
@@ -167,6 +175,7 @@ function ProjectStory() {
         <Link className="project-cta" to="/">Open the live forecast <span aria-hidden="true">→</span></Link>
       </section>
 
+      {/* Summarize the problem, solution, and limits of the Phase 1 idea. */}
       <section className="project-principles" aria-label="Project scope">
         <article>
           <span className="principle-number">01 / PROBLEM</span>
@@ -185,6 +194,7 @@ function ProjectStory() {
         </article>
       </section>
 
+      {/* Provide a short sequence for demonstrating the working application. */}
       <section className="project-process">
         <div>
           <p className="eyebrow">LIVE WALKTHROUGH</p>
@@ -197,6 +207,7 @@ function ProjectStory() {
         </ol>
       </section>
 
+      {/* Explain the API choice and how a backend can replace it in a later phase. */}
       <section className="project-technical">
         <div>
           <p className="eyebrow">TECHNICAL CHOICES</p>
@@ -212,6 +223,7 @@ function ProjectStory() {
   );
 }
 
+// Give unknown client-side routes a clear way back to the forecast.
 function NotFound() {
   return (
     <main className="project-page not-found-page">
@@ -222,7 +234,9 @@ function NotFound() {
   );
 }
 
+// The dashboard owns location search, forecast loading, and all forecast presentation.
 function Dashboard() {
+  // Keep the search field and the saved-location loading state in sync on startup.
   const [city, setCity] = useState(() => {
     const savedLocation = readSavedLocation();
     return typeof savedLocation === "string" ? savedLocation : savedLocation?.name ?? "";
@@ -236,6 +250,7 @@ function Dashboard() {
   const [suggestionsEnabled, setSuggestionsEnabled] = useState(false);
   const [activeSuggestion, setActiveSuggestion] = useState(-1);
 
+  // Wait briefly after typing before asking the geocoding API for matching places.
   useEffect(() => {
     const query = city.trim();
     if (!suggestionsEnabled || query.length < 2) return undefined;
@@ -266,6 +281,7 @@ function Dashboard() {
     };
   }, [city, suggestionsEnabled]);
 
+  // Fetch current and forecast weather for a typed name or a selected geocoding result.
   async function loadWeather(locationOrName) {
     setLoading(true);
     setError("");
@@ -284,6 +300,7 @@ function Dashboard() {
     }
   }
 
+  // On later visits, refresh the forecast for the last selected place.
   useEffect(() => {
     let active = true;
     const savedLocation = readSavedLocation();
@@ -309,11 +326,13 @@ function Dashboard() {
     };
   }, []);
 
+  // Submitting the form searches the text when no suggestion was selected.
   function handleSearch(event) {
     event.preventDefault();
     if (city.trim()) loadWeather(city);
   }
 
+  // Update suggestions as the user types; clearing the field also clears saved weather.
   function handleLocationChange(event) {
     const nextCity = event.target.value;
     setCity(nextCity);
@@ -329,6 +348,7 @@ function Dashboard() {
     }
   }
 
+  // Fetch weather for the exact coordinates in a chosen suggestion.
   function chooseSuggestion(location) {
     setSuggestionsEnabled(false);
     setSuggestionsOpen(false);
@@ -337,6 +357,7 @@ function Dashboard() {
     loadWeather(location);
   }
 
+  // Allow the location suggestion list to be used with arrow keys, Enter, and Escape.
   function handleLocationKeyDown(event) {
     if (!suggestionsOpen || suggestions.length === 0) {
       if (event.key === "Escape") setSuggestionsOpen(false);
@@ -357,6 +378,7 @@ function Dashboard() {
     }
   }
 
+  // Prepare local display values from the API response for the dashboard sections.
   const weather = weatherData?.weather;
   const current = weather?.current;
   const todayHours = weather?.hourly.time
@@ -383,6 +405,7 @@ function Dashboard() {
 
   return (
       <main id="home" className="dashboard">
+        {/* Introductory copy and accessible location search with live suggestions. */}
         <section className="welcome-row">
           <div>
             <p className="eyebrow">YOUR FARM, IN SEASON</p>
@@ -441,6 +464,7 @@ function Dashboard() {
 
         {error && <p className="error-message" role="alert">{error}</p>}
 
+        {/* Show a loading state or location prompt until a forecast is available. */}
         {loading && !weatherData && <div className="loading-state">Gathering local conditions...</div>}
 
         {!loading && !weatherData && !error && (
@@ -451,8 +475,10 @@ function Dashboard() {
           </div>
         )}
 
+        {/* Forecast cards are rendered only after weather data has loaded successfully. */}
         {weatherData && current && (
           <>
+            {/* Current conditions sit beside the weather-based planting note. */}
             <section className="overview-grid" aria-label="Current farm weather">
               <article className="weather-hero">
                 <div className="weather-hero-top">
@@ -484,6 +510,7 @@ function Dashboard() {
               </article>
             </section>
 
+            {/* Compare daily high/low temperatures and rain chance for the coming week. */}
             <section className="forecast-section" aria-labelledby="forecast-heading">
               <div className="section-heading">
                 <div><p className="eyebrow">LOOKING AHEAD</p><h2 id="forecast-heading">The week, at a glance</h2></div>
@@ -502,6 +529,7 @@ function Dashboard() {
               </div>
             </section>
 
+            {/* Show today's selected hourly readings and explain how to use the forecast. */}
             <section className="lower-grid">
               <article className="hourly-section" aria-labelledby="hourly-heading">
                 <div className="section-heading compact-heading">
