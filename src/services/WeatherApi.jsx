@@ -2,10 +2,10 @@ const GEOCODING_URL = "https://geocoding-api.open-meteo.com/v1/search";
 
 const WEATHER_URL = "https://api.open-meteo.com/v1/forecast";
 
-export async function fetchWeather(city) {
+export async function searchLocations(query) {
   const geoParams = new URLSearchParams({
-    name: city,
-    count: "1",
+    name: query,
+    count: "6",
     language: "en",
     format: "json",
   });
@@ -17,12 +17,21 @@ export async function fetchWeather(city) {
   }
 
   const geoData = await geoResponse.json();
+  return geoData.results ?? [];
+}
 
-  if (!geoData.results || geoData.results.length === 0) {
-    throw new Error("City not found. Try another location.");
+export async function fetchWeather(locationOrName) {
+  let location = locationOrName;
+
+  if (typeof locationOrName === "string") {
+    const locations = await searchLocations(locationOrName);
+
+    if (locations.length === 0) {
+      throw new Error("City not found. Try another location.");
+    }
+
+    [location] = locations;
   }
-
-  const location = geoData.results[0];
 
   const weatherParams = new URLSearchParams({
     latitude: location.latitude,
@@ -33,7 +42,8 @@ export async function fetchWeather(city) {
 
     hourly: "temperature_2m,precipitation_probability,weather_code",
 
-    daily: "weather_code,temperature_2m_max,temperature_2m_min",
+    daily:
+      "weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max",
 
     timezone: "auto",
     forecast_days: "7",
