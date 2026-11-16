@@ -620,7 +620,7 @@ const calendarEntries = [
     sourceUrl: sourceUrl('0232'),
     sourceDate: null,
     verificationStatus: 'Unavailable (no FAO calendar entry found)',
-    notes: 'The Kenya crop catalog lists Green Grams, but the Kenya calendar query returned no dates. The KALRO PDF resource was sign-in gated when checked.',
+    notes: 'The Kenya crop catalog lists Green Grams, but the Kenya calendar query returned no dates. The KALRO/FAO spreadsheet and KALRO PDF downloads were sign-in gated when checked.',
   },
   {
     id: 'potatoes-uh1-first',
@@ -836,17 +836,24 @@ export const plantingCalendarData = calendarEntries.map((entry) => {
 
 export const calendarReferenceSources = [
   {
-    sourceName: 'KALRO Kenya Crop Calendar dataset listing (Sprout)',
-    sourceUrl: 'https://staging.sproutopencontent.com/dataset/kenya-crop-calendar-kalro',
+    sourceName: 'KALRO/FAO Kenya crop-calendar spreadsheet (Sprout listing)',
+    sourceUrl: 'https://staging.sproutopencontent.com/dataset/kenya-crop-calendar-fao',
     sourceDate: '2022-06-09',
-    licence: 'CC BY 4.0 (as reported in the supplied project proposal)',
-    reviewStatus: 'Not cross-checked against the calendar records',
+    licence: 'CC BY 4.0 (reported in the supplied proposal; not rechecked on the file)',
+    reviewStatus: 'Not cross-checked; spreadsheet download requires Sprout sign-in',
   },
   {
-    sourceName: 'Kenya Meteorological Department agrometeorology services',
-    sourceUrl: 'https://meteo.go.ke/Services/agrometeorology/',
+    sourceName: 'KALRO crop-cycle calendar PDF (Sprout listing)',
+    sourceUrl: 'https://staging.sproutopencontent.com/dataset/kenya-crop-calendar-kalro',
+    sourceDate: '2022-06-09',
+    licence: 'CC BY 4.0 (reported in the supplied proposal; not rechecked on the file)',
+    reviewStatus: 'Not cross-checked; PDF download requires Sprout sign-in',
+  },
+  {
+    sourceName: 'Kenya Meteorological Department monthly agrometeorological bulletin',
+    sourceUrl: 'https://meteo.go.ke/our-products/monthly-agrometeorological-bulletin/',
     sourceDate: null,
     licence: null,
-    reviewStatus: 'Seasonal and county weather context; not a crop-calendar cross-check',
+    reviewStatus: 'Weather context only; not crop-specific planting dates',
   },
 ];
