@@ -27,33 +27,87 @@ const sourceCropLabelNotes = {
 };
 const growingDurationByCropZoneSeason = {
   Maize: {
-    UH1: { 'First season': '210-280 days', 'Second season': '210-280 days' },
-    UM1: { 'First season': '135-160 days', 'Second season': '135-160 days' },
-    UM4: { 'First season': '135-160 days', 'Second season': '135-160 days' },
-    LM4: { 'First season': '90-120 days', 'Second season': '90-120 days' },
+    'upper highland zone 1': {
+      'First season': '210-280 days',
+      'Second season': '210-280 days',
+    },
+    'upper midland zone 1': {
+      'First season': '135-160 days',
+      'Second season': '135-160 days',
+    },
+    'upper midland zone 4': {
+      'First season': '135-160 days',
+      'Second season': '135-160 days',
+    },
+    'lower midland zone 4': {
+      'First season': '90-120 days',
+      'Second season': '90-120 days',
+    },
   },
   Beans: {
-    LH1: { 'First season': '90-150 days', 'Second season': '90-150 days' },
-    UM1: { 'First season': '75-120 days' },
-    UM4: { 'First season': '75-120 days', 'Second season': '75-120 days' },
-    LM3: { 'First season': '70-90 days', 'Second season': '70-90 days' },
-    LM4: { 'First season': '70-90 days', 'Second season': '70-90 days' },
+    'lower highland zone 1': {
+      'First season': '90-150 days',
+      'Second season': '90-150 days',
+    },
+    'upper midland zone 1': { 'First season': '75-120 days' },
+    'upper midland zone 4': {
+      'First season': '75-120 days',
+      'Second season': '75-120 days',
+    },
+    'lower midland zone 3': {
+      'First season': '70-90 days',
+      'Second season': '70-90 days',
+    },
+    'lower midland zone 4': {
+      'First season': '70-90 days',
+      'Second season': '70-90 days',
+    },
   },
   Sorghum: {
-    UM1: { 'First season': '160-180 days', 'Second season': '160-180 days' },
-    UM4: { 'First season': '85-115 days', 'Second season': '85-115 days' },
-    UM5: { 'First season': '85-115 days', 'Second season': '85-115 days' },
-    LM2: { 'First season': '90-115 days', 'Second season': '85-115 days' },
-    LM4: { 'First season': '85-115 days', 'Second season': '85-115 days' },
-    L4: { 'First season': '85-115 days', 'Second season': '85-115 days' },
+    'upper midland zone 1': {
+      'First season': '160-180 days',
+      'Second season': '160-180 days',
+    },
+    'upper midland zone 4': {
+      'First season': '85-115 days',
+      'Second season': '85-115 days',
+    },
+    'upper midland zone 5': {
+      'First season': '85-115 days',
+      'Second season': '85-115 days',
+    },
+    'lower midland zone 2': {
+      'First season': '90-115 days',
+      'Second season': '85-115 days',
+    },
+    'lower midland zone 4': {
+      'First season': '85-115 days',
+      'Second season': '85-115 days',
+    },
+    'lowerland zone 4': {
+      'First season': '85-115 days',
+      'Second season': '85-115 days',
+    },
   },
   'Irish Potatoes': {
-    UH1: { 'First season': '90-150 days', 'Second season': '90-150 days' },
-    UH3: { 'First season': '90-150 days', 'Second season': '90-150 days' },
-    LH1: { 'First season': '90-150 days', 'Second season': '90-150 days' },
-    UM1: { 'First season': '75-120 days' },
-    UM3: { 'First season': '75-120 days', 'Second season': '75-120 days' },
-    UM4: { 'First season': '75-120 days' },
+    'upper highland zone 1': {
+      'First season': '90-150 days',
+      'Second season': '90-150 days',
+    },
+    'upper highland zone 3': {
+      'First season': '90-150 days',
+      'Second season': '90-150 days',
+    },
+    'lower highland zone 1': {
+      'First season': '90-150 days',
+      'Second season': '90-150 days',
+    },
+    'upper midland zone 1': { 'First season': '75-120 days' },
+    'upper midland zone 3': {
+      'First season': '75-120 days',
+      'Second season': '75-120 days',
+    },
+    'upper midland zone 4': { 'First season': '75-120 days' },
   },
 };
 
@@ -741,7 +795,10 @@ const calendarEntries = [
 ];
 
 export const plantingCalendarData = calendarEntries.map((entry) => {
-  const zoneCode = entry.agroEcologicalZone?.match(/\(([^)]+)\)/)?.[1].replace(/\s/g, '');
+  const zoneName = entry.agroEcologicalZone
+    ?.replace(/\s*\([^)]*\)/g, '')
+    .trim()
+    .toLowerCase();
   const sourceCropName = sourceCropLabels[entry.crop];
   const hasCropLabelMismatch = Boolean(sourceCropLabelNotes[entry.crop]);
   const reviewStatus = hasCropLabelMismatch
@@ -755,7 +812,7 @@ export const plantingCalendarData = calendarEntries.map((entry) => {
     sourceCropLabelNote: sourceCropLabelNotes[entry.crop] ?? null,
     subCounty: null,
     growingDuration:
-      growingDurationByCropZoneSeason[entry.crop]?.[zoneCode]?.[entry.season] ?? null,
+      growingDurationByCropZoneSeason[entry.crop]?.[zoneName]?.[entry.season] ?? null,
     sourceName: entry.source,
     sourceRecordUrl: entry.sourceUrl,
     sourceUrl: 'https://cropcalendar.apps.fao.org/',
