@@ -4,8 +4,47 @@ const sourceUrl = (cropId) =>
 const faoSource = 'FAO Crop Calendar (Kenya)';
 const faoSourceDate = '2021-02-26';
 const faoVerificationStatus = 'Not cross-checked (FAO source only)';
+const accessedDate = '2026-11-16';
+const cropIds = {
+  Maize: '0113',
+  Beans: '0027',
+  Sorghum: '0325',
+  'Green Grams': '0232',
+  'Irish Potatoes': '0283',
+};
+const growingDurationByCropZoneSeason = {
+  Maize: {
+    UH1: { 'First season': '210-280 days', 'Second season': '210-280 days' },
+    UM1: { 'First season': '135-160 days', 'Second season': '135-160 days' },
+    UM4: { 'First season': '135-160 days', 'Second season': '135-160 days' },
+    LM4: { 'First season': '90-120 days', 'Second season': '90-120 days' },
+  },
+  Beans: {
+    LH1: { 'First season': '90-150 days', 'Second season': '90-150 days' },
+    UM1: { 'First season': '75-120 days' },
+    UM4: { 'First season': '75-120 days', 'Second season': '75-120 days' },
+    LM3: { 'First season': '70-90 days', 'Second season': '70-90 days' },
+    LM4: { 'First season': '70-90 days', 'Second season': '70-90 days' },
+  },
+  Sorghum: {
+    UM1: { 'First season': '160-180 days', 'Second season': '160-180 days' },
+    UM4: { 'First season': '85-115 days', 'Second season': '85-115 days' },
+    UM5: { 'First season': '85-115 days', 'Second season': '85-115 days' },
+    LM2: { 'First season': '90-115 days', 'Second season': '85-115 days' },
+    LM4: { 'First season': '85-115 days', 'Second season': '85-115 days' },
+    L4: { 'First season': '85-115 days', 'Second season': '85-115 days' },
+  },
+  'Irish Potatoes': {
+    UH1: { 'First season': '90-150 days', 'Second season': '90-150 days' },
+    UH3: { 'First season': '90-150 days', 'Second season': '90-150 days' },
+    LH1: { 'First season': '90-150 days', 'Second season': '90-150 days' },
+    UM1: { 'First season': '75-120 days' },
+    UM3: { 'First season': '75-120 days', 'Second season': '75-120 days' },
+    UM4: { 'First season': '75-120 days' },
+  },
+};
 
-export const plantingCalendarData = [
+const calendarEntries = [
   {
     id: 'maize-uh1-first',
     crop: 'Maize',
@@ -685,5 +724,51 @@ export const plantingCalendarData = [
     sourceDate: faoSourceDate,
     verificationStatus: faoVerificationStatus,
     notes: null,
+  },
+];
+
+export const plantingCalendarData = calendarEntries.map((entry) => {
+  const zoneCode = entry.agroEcologicalZone?.match(/\(([^)]+)\)/)?.[1].replace(/\s/g, '');
+
+  return {
+    ...entry,
+    cropId: cropIds[entry.crop],
+    subCounty: null,
+    growingDuration:
+      growingDurationByCropZoneSeason[entry.crop]?.[zoneCode]?.[entry.season] ?? null,
+    sourceName: entry.source,
+    sourceRecordUrl: entry.sourceUrl,
+    sourceUrl: 'https://cropcalendar.apps.fao.org/',
+    sourceDocument:
+      entry.crop === 'Green Grams'
+        ? 'FAO Crop Calendar Kenya query (no calendar entry returned)'
+        : 'FAO Crop Calendar: Kenya agro-ecological zone record',
+    sourcePageOrSheet: null,
+    sourcePublishedDate: null,
+    sourceDateType: entry.sourceDate ? 'Last updated' : null,
+    accessedDate,
+    sourceAccessNote:
+      'The calendar is stored locally; the queried FAO data endpoint is not documented as a stable public API.',
+    licence: null,
+    reviewerRole: null,
+    reviewStatus: entry.verificationStatus,
+    lastReviewedAt: accessedDate,
+  };
+});
+
+export const calendarReferenceSources = [
+  {
+    sourceName: 'KALRO Kenya Crop Calendar dataset listing (Sprout)',
+    sourceUrl: 'https://staging.sproutopencontent.com/dataset/kenya-crop-calendar-kalro',
+    sourceDate: '2022-06-09',
+    licence: 'CC BY 4.0 (as reported in the supplied project proposal)',
+    reviewStatus: 'Not cross-checked against the calendar records',
+  },
+  {
+    sourceName: 'Kenya Meteorological Department agrometeorology services',
+    sourceUrl: 'https://meteo.go.ke/Services/agrometeorology/',
+    sourceDate: null,
+    licence: null,
+    reviewStatus: 'Seasonal and county weather context; not a crop-calendar cross-check',
   },
 ];
