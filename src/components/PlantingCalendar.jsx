@@ -8,8 +8,15 @@ import './plantingCalendar.css';
 const unavailable = 'Unavailable';
 
 function getStatusClass(status) {
-  if (status.includes('Unavailable')) return 'status-unavailable';
-  if (status.includes('Not cross-checked')) return 'status-unverified';
+  const normalizedStatus = status.toLowerCase();
+  if (normalizedStatus.includes('unavailable')) return 'status-unavailable';
+  if (
+    normalizedStatus.includes('not cross-checked') ||
+    normalizedStatus.includes('mismatch') ||
+    normalizedStatus.includes('unverified')
+  ) {
+    return 'status-unverified';
+  }
   return 'status-verified';
 }
 
@@ -147,6 +154,9 @@ function PlantingCalendar() {
 
               <footer className="card-source">
                 <p><strong>Source:</strong> {item.sourceName}</p>
+                {item.sourceCropName && (
+                  <p><strong>Source crop label:</strong> {item.sourceCropName}</p>
+                )}
                 {item.sourceUrl && (
                   <p>
                     <a href={item.sourceUrl} target="_blank" rel="noopener noreferrer">
@@ -195,6 +205,9 @@ function PlantingCalendar() {
                   <strong>Last reviewed:</strong> {item.lastReviewedAt}
                 </p>
                 <p className="source-notes">{item.sourceAccessNote}</p>
+                {item.sourceCropLabelNote && (
+                  <p className="source-notes">{item.sourceCropLabelNote}</p>
+                )}
                 {item.notes && <p className="source-notes">{item.notes}</p>}
               </footer>
             </article>

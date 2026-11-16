@@ -12,6 +12,19 @@ const cropIds = {
   'Green Grams': '0232',
   'Irish Potatoes': '0283',
 };
+const sourceCropLabels = {
+  Maize: 'Corn, sweet',
+  Beans: 'Bean, broad green',
+  Sorghum: 'Sorghum',
+  'Green Grams': null,
+  'Irish Potatoes': 'Potato',
+};
+const sourceCropLabelNotes = {
+  Maize:
+    'The FAO record labels this crop "Corn, sweet"; its comments describe maize hybrids. Confirm the crop identity independently.',
+  Beans:
+    'The FAO calendar labels this "Bean, broad green", while the Kenya crop catalog maps the same ID to common dry beans. Confirm crop identity before interpreting these as dry-bean dates.',
+};
 const growingDurationByCropZoneSeason = {
   Maize: {
     UH1: { 'First season': '210-280 days', 'Second season': '210-280 days' },
@@ -729,10 +742,17 @@ const calendarEntries = [
 
 export const plantingCalendarData = calendarEntries.map((entry) => {
   const zoneCode = entry.agroEcologicalZone?.match(/\(([^)]+)\)/)?.[1].replace(/\s/g, '');
+  const sourceCropName = sourceCropLabels[entry.crop];
+  const hasCropLabelMismatch = Boolean(sourceCropLabelNotes[entry.crop]);
+  const reviewStatus = hasCropLabelMismatch
+    ? 'Crop label mismatch; not cross-checked'
+    : entry.verificationStatus;
 
   return {
     ...entry,
     cropId: cropIds[entry.crop],
+    sourceCropName,
+    sourceCropLabelNote: sourceCropLabelNotes[entry.crop] ?? null,
     subCounty: null,
     growingDuration:
       growingDurationByCropZoneSeason[entry.crop]?.[zoneCode]?.[entry.season] ?? null,
@@ -751,7 +771,8 @@ export const plantingCalendarData = calendarEntries.map((entry) => {
       'The calendar is stored locally; the queried FAO data endpoint is not documented as a stable public API.',
     licence: null,
     reviewerRole: null,
-    reviewStatus: entry.verificationStatus,
+    verificationStatus: reviewStatus,
+    reviewStatus,
     lastReviewedAt: accessedDate,
   };
 });
