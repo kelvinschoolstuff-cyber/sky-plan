@@ -1,151 +1,156 @@
-
-.planting-calendar-container {
-  max-width: 1000px;
+.calendar-container {
+  max-width: 1100px;
   margin: 0 auto;
   padding: 20px;
   font-family: var(--sans);
-  color: var(--text);
 }
 
 .calendar-header {
   margin-bottom: 24px;
-  text-align: center;
 }
 
-.calendar-disclaimer {
+.calendar-header h2 {
+  margin-bottom: 12px;
+}
+
+.warning-banner {
   background-color: #fff3cd;
   color: #856404;
   padding: 12px;
   border-radius: 6px;
-  font-size: 0.9em;
+  font-size: 0.9rem;
   border: 1px solid #ffeeba;
 }
 
-.calendar-filters {
+.filters-row {
   display: flex;
-  gap: 20px;
-  margin-bottom: 30px;
-  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
 }
 
-.filter-group {
+.filter-box {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.filter-group label {
-  font-weight: bold;
+.filter-box label {
+  font-size: 0.85rem;
+  font-weight: 600;
   color: var(--text-h);
 }
 
-.filter-group select {
+.filter-box select {
   padding: 8px 12px;
-  border-radius: 4px;
+  border-radius: 6px;
   border: 1px solid var(--border);
-  background-color: var(--bg);
-  color: var(--text-h);
-  font-size: 1rem;
+  background: var(--bg);
+  color: var(--text);
 }
 
-.calendar-grid {
+.cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 20px;
 }
 
-.calendar-card {
+.crop-card {
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 16px;
-  background-color: var(--social-bg);
-  box-shadow: var(--shadow);
+  background: var(--bg);
   display: flex;
   flex-direction: column;
 }
 
-.card-title {
-  margin: 0 0 12px 0;
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.card-top h3 {
+  margin: 0;
+  font-size: 1.2rem;
   color: var(--accent);
-  font-size: 1.25rem;
 }
 
-.card-details {
-  font-size: 0.9em;
-  margin-bottom: 12px;
-  color: var(--text);
+.status-badge {
+  font-size: 0.7rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
 }
 
-.card-details p {
+.bg-red { background: #ffebee; color: #c62828; }
+.bg-orange { background: #fff3e0; color: #ef6c00; }
+.bg-green { background: #e8f5e9; color: #2e7d32; }
+
+.card-info p {
   margin: 4px 0;
+  font-size: 0.9rem;
 }
 
 .card-dates {
-  background-color: var(--bg);
-  padding: 12px;
+  display: flex;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.date-box {
+  flex: 1;
+  background: var(--social-bg);
+  padding: 10px;
   border-radius: 6px;
   border: 1px solid var(--border);
-  margin-bottom: 12px;
 }
 
-.card-dates p {
-  margin: 4px 0;
-  font-size: 0.9em;
+.date-box span {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 4px;
 }
 
-.date-unavailable {
-  color: #d32f2f;
-  font-weight: bold;
-  font-size: 0.85em;
-  margin: 0;
+.date-box strong {
+  font-size: 0.9rem;
 }
 
-.card-source {
-  font-size: 0.8em;
+.card-footer {
+  margin-top: auto;
   border-top: 1px solid var(--border);
   padding-top: 12px;
-  color: var(--text);
-  margin-top: auto;
+  font-size: 0.85rem;
 }
 
-.card-source p {
+.card-footer summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.source-content {
+  margin-top: 10px;
+  background: var(--social-bg);
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.source-content p {
   margin: 4px 0;
 }
 
-.card-source a {
+.note-text {
+  color: #ef6c00;
+  font-style: italic;
+}
+
+.source-content a {
   color: var(--accent);
   text-decoration: none;
-}
-
-.card-source a:hover {
-  text-decoration: underline;
-}
-
-.source-notes {
-  font-style: italic;
-  color: #777;
-}
-
-.status-verified {
-  color: #2e7d32; /* Green */
-  font-weight: bold;
-}
-
-.status-unverified {
-  color: #f57c00; /* Orange */
-  font-weight: bold;
-}
-
-.status-unavailable {
-  color: #d32f2f; /* Red */
-  font-weight: bold;
-}
-
-.no-results {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 40px;
-  color: var(--text);
-  font-style: italic;
+  display: inline-block;
+  margin-top: 8px;
 }
