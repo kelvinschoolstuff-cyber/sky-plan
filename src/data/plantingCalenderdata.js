@@ -1,6 +1,4 @@
-
 export const plantingCalendarData = [
-  
   {
     id: 'maize-uh1-first',
     crop: 'Maize',
@@ -15,9 +13,8 @@ export const plantingCalendarData = [
     sourceUrl: 'https://api-cropcalendar.apps.fao.org/api/v1/cropCalendar?language=en&crops=0113&countries=KE',
     sourceDate: '2021-02-26',
     status: 'Not cross-checked',
-    notes: 'FAO labels this "Corn, sweet", but it maps to Maize in the Kenya catalog. Needs verification.'
+    notes: 'FAO calls this "Corn, sweet" but the Kenya crop catalog maps the same ID to maize. Worth checking before we publish.',
   },
-
   {
     id: 'maize-um1-first',
     crop: 'Maize',
@@ -32,9 +29,8 @@ export const plantingCalendarData = [
     sourceUrl: 'https://api-cropcalendar.apps.fao.org/api/v1/cropCalendar?language=en&crops=0113&countries=KE',
     sourceDate: '2021-02-26',
     status: 'Not cross-checked',
-    notes: 'FAO labels this "Corn, sweet". Rain-fed.'
+    notes: 'Rain-fed.',
   },
-
   {
     id: 'maize-um1-second',
     crop: 'Maize',
@@ -49,10 +45,8 @@ export const plantingCalendarData = [
     sourceUrl: 'https://api-cropcalendar.apps.fao.org/api/v1/cropCalendar?language=en&crops=0113&countries=KE',
     sourceDate: '2021-02-26',
     status: 'Not cross-checked',
-    notes: 'FAO labels this "Corn, sweet". Rain-fed.'
+    notes: 'Rain-fed.',
   },
-
-
   {
     id: 'maize-lm4-first',
     crop: 'Maize',
@@ -67,10 +61,8 @@ export const plantingCalendarData = [
     sourceUrl: 'https://api-cropcalendar.apps.fao.org/api/v1/cropCalendar?language=en&crops=0113&countries=KE',
     sourceDate: '2021-02-26',
     status: 'Not cross-checked',
-    notes: 'FAO labels this "Corn, sweet". Rain-fed.'
+    notes: 'Rain-fed.',
   },
-
-  
   {
     id: 'beans-lh1-first',
     crop: 'Beans',
@@ -85,9 +77,8 @@ export const plantingCalendarData = [
     sourceUrl: 'https://api-cropcalendar.apps.fao.org/api/v1/cropCalendar?language=en&crops=0027&countries=KE',
     sourceDate: '2021-02-26',
     status: 'Not cross-checked',
-    notes: 'FAO calls this "Bean, broad green". 29 Feb date is kept exactly as published.'
+    notes: 'FAO labels this "Bean, broad green". The 29 Feb date is kept exactly as published.',
   },
-
   {
     id: 'beans-um4-first',
     crop: 'Beans',
@@ -102,10 +93,8 @@ export const plantingCalendarData = [
     sourceUrl: 'https://api-cropcalendar.apps.fao.org/api/v1/cropCalendar?language=en&crops=0027&countries=KE',
     sourceDate: '2021-02-26',
     status: 'Not cross-checked',
-    notes: null
+    notes: null,
   },
-  
-  
   {
     id: 'sorghum-um1-first',
     crop: 'Sorghum',
@@ -120,9 +109,8 @@ export const plantingCalendarData = [
     sourceUrl: 'https://api-cropcalendar.apps.fao.org/api/v1/cropCalendar?language=en&crops=0325&countries=KE',
     sourceDate: '2021-02-26',
     status: 'Not cross-checked',
-    notes: 'Mostly rain-fed.'
+    notes: 'Mostly rain-fed.',
   },
-
   {
     id: 'sorghum-lm2-second',
     crop: 'Sorghum',
@@ -137,10 +125,9 @@ export const plantingCalendarData = [
     sourceUrl: 'https://api-cropcalendar.apps.fao.org/api/v1/cropCalendar?language=en&crops=0325&countries=KE',
     sourceDate: '2021-02-26',
     status: 'Not cross-checked',
-    notes: 'Harvest crosses into next year.'
+    notes: 'Harvest runs into the next year.',
   },
 
-  
   {
     id: 'green-grams-unavailable',
     crop: 'Green Grams',
@@ -155,10 +142,9 @@ export const plantingCalendarData = [
     sourceUrl: 'https://api-cropcalendar.apps.fao.org/api/v1/cropCalendar?language=en&crops=0232&countries=KE',
     sourceDate: null,
     status: 'Unavailable',
-    notes: 'The FAO API returned no calendar records for Green Grams in Kenya. The KALRO PDF was login-gated.'
+    notes: 'The FAO API returned no records for green grams in Kenya. The KALRO PDF needed a login, so we have nothing to cross-check against yet.',
   },
 
-  
   {
     id: 'potatoes-uh1-first',
     crop: 'Irish Potatoes',
@@ -173,7 +159,7 @@ export const plantingCalendarData = [
     sourceUrl: 'https://api-cropcalendar.apps.fao.org/api/v1/cropCalendar?language=en&crops=0283&countries=KE',
     sourceDate: '2021-02-26',
     status: 'Not cross-checked',
-    notes: 'Rain-fed.'
+    notes: 'Rain-fed.',
   },
 
   {
@@ -190,6 +176,7 @@ export const plantingCalendarData = [
     sourceUrl: 'https://api-cropcalendar.apps.fao.org/api/v1/cropCalendar?language=en&crops=0283&countries=KE',
     sourceDate: '2021-02-26',
     status: 'Not cross-checked',
-    notes: 'Harvest crosses into next year. Timing differs East vs West of Rift Valley.'
-  }
+    notes: 'Harvest crosses into the next year. FAO notes different timing east and west of the Rift Valley.',
+  },
 ];
+
