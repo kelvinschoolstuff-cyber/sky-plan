@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { plantingCalendarData } from '../data/plantingCalendarData';
-import './PlantingCalendar.css';
+import './plantingCalendar.css';
 
 const unavailable = 'N/A';
 
@@ -9,50 +9,46 @@ function PlantingCalendar() {
   const [selectedSeason, setSelectedSeason] = useState('All');
   const [selectedZone, setSelectedZone] = useState('All');
 
-  
   const crops = ['All', ...new Set(plantingCalendarData.map((item) => item.crop))];
-  const zones = ['All', ...new Set(plantingCalendarData.map((item) => item.zone))];
-  const seasons = ['All', ...new Set(plantingCalendarData.map((item) => item.season))];
+  const zones = ['All', ...new Set(plantingCalendarData.map((item) => item.agroEcologicalZone).filter(Boolean))];
+  const seasons = ['All', ...new Set(plantingCalendarData.map((item) => item.season).filter(Boolean))];
 
-  
-  const filteredData = plantingCalendarData.filter((item) => {
-    const matchCrop = selectedCrop === 'All' || item.crop === selectedCrop;
-    const matchSeason = selectedSeason === 'All' || item.season === selectedSeason;
-    const matchZone = selectedZone === 'All' || item.zone === selectedZone;
-    return matchCrop && matchSeason && matchZone;
+  const filtered = plantingCalendarData.filter((item) => {
+    const cropOk = selectedCrop === 'All' || item.crop === selectedCrop;
+    const seasonOk = selectedSeason === 'All' || item.season === selectedSeason;
+    const zoneOk = selectedZone === 'All' || item.agroEcologicalZone === selectedZone;
+    return cropOk && seasonOk && zoneOk;
   });
 
-  
-  const getStatusColor = (status) => {
-    if (status.includes('Unavailable')) return 'bg-red';
-    if (status.includes('Not cross-checked')) return 'bg-orange';
-    return 'bg-green';
+  const statusClass = (status) => {
+    if (status === 'Unavailable') return 'badge-red';
+    if (status === 'Not cross-checked') return 'badge-orange';
+    return 'badge-green';
   };
 
   return (
     <div className="calendar-container">
       <header className="calendar-header">
-        <h2>Planting & Harvesting Calendar</h2>
-        <div className="warning-banner">
-          <strong>Note:</strong> These are indicative periods from the FAO. Always check with your local agricultural extension officer before planting.
-        </div>
+        <h2>Planting & harvesting calendar</h2>
+        <p className="calendar-note">
+          Dates are from FAO and are indicative only. Check with your local extension officer before planting.
+        </p>
       </header>
 
-      {/* Filters */}
-      <div className="filters-row">
-        <div className="filter-box">
+      <div className="filters">
+        <div className="filter">
           <label>Crop</label>
           <select value={selectedCrop} onChange={(e) => setSelectedCrop(e.target.value)}>
             {crops.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
         </div>
-        <div className="filter-box">
-          <label>Zone / County</label>
+        <div className="filter">
+          <label>Zone or county</label>
           <select value={selectedZone} onChange={(e) => setSelectedZone(e.target.value)}>
             {zones.map((z) => <option key={z} value={z}>{z}</option>)}
           </select>
         </div>
-        <div className="filter-box">
+        <div className="filter">
           <label>Season</label>
           <select value={selectedSeason} onChange={(e) => setSelectedSeason(e.target.value)}>
             {seasons.map((s) => <option key={s} value={s}>{s}</option>)}
@@ -60,55 +56,43 @@ function PlantingCalendar() {
         </div>
       </div>
 
-      {/* Data Grid */}
-      <div className="cards-grid">
-        {filteredData.length > 0 ? (
-          filteredData.map((item) => (
-            <div key={item.id} className="crop-card">
-              
-              <div className="card-top">
+      <div className="cards">
+        {filtered.length > 0 ? (
+          filtered.map((item) => (
+            <div key={item.id} className="card">
+              <div className="card-head">
                 <h3>{item.crop}</h3>
-                <span className={`status-badge ${getStatusColor(item.status)}`}>
-                  {item.status}
-                </span>
+                <span className={`badge ${statusClass(item.verificationStatus)}`}>{item.verificationStatus}</span>
               </div>
 
-              <div className="card-info">
-                <p><strong>Zone:</strong> {item.zone}</p>
-                <p><strong>Season:</strong> {item.season}</p>
-                <p><strong>Duration:</strong> {item.duration || unavailable}</p>
+              <div className="card-body">
+                <p><strong>Zone:</strong> {item.agroEcologicalZone || unavailable}</p>
+                <p><strong>Season:</strong> {item.season || unavailable}</p>
+                <p><strong>System:</strong> {item.productionSystem || 'Not specified'}</p>
               </div>
 
-              <div className="card-dates">
-                <div className="date-box">
+              <div className="dates">
+                <div className="date-col">
                   <span>Plant</span>
-                  <strong>{item.plantStart || unavailable} to {item.plantEnd || unavailable}</strong>
+                  <strong>{item.plantingStart || unavailable} to {item.plantingEnd || unavailable}</strong>
                 </div>
-                <div className="date-box">
+                <div className="date-col">
                   <span>Harvest</span>
                   <strong>{item.harvestStart || unavailable} to {item.harvestEnd || unavailable}</strong>
                 </div>
               </div>
 
-              {/* Clean source link - no massive text dump */}
-              <div className="card-footer">
-                <details>
-                  <summary>View source details</summary>
-                  <div className="source-content">
-                    <p><strong>Source:</strong> {item.sourceName}</p>
-                    <p><strong>Published:</strong> {item.sourceDate || 'Unknown'}</p>
-                    {item.notes && <p className="note-text">{item.notes}</p>}
-                    <a href={item.sourceUrl} target="_blank" rel="noreferrer">
-                      Open FAO Record
-                    </a>
-                  </div>
-                </details>
-              </div>
-
+              <details className="source">
+                <summary>View source details</summary>
+                <p><strong>Source:</strong> {item.source}</p>
+                <p><strong>Published:</strong> {item.sourceDate || 'Unknown'}</p>
+                {item.notes && <p className="note">{item.notes}</p>}
+                <a href={item.sourceUrl} target="_blank" rel="noreferrer">Open FAO record</a>
+              </details>
             </div>
           ))
         ) : (
-          <p className="empty-state">No records match your filters.</p>
+          <p className="empty">No records match your filters.</p>
         )}
       </div>
     </div>
@@ -116,3 +100,6 @@ function PlantingCalendar() {
 }
 
 export default PlantingCalendar;
+
+
+
