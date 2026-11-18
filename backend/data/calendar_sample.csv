@@ -1,0 +1,13 @@
+# SAMPLE DATA ONLY. These rows exist to test the importer and the screens. The dates are placeholders, NOT agronomic data.
+# The importer skips them unless you pass --sample, and the app labels them as sample data. Never load them into a real database.
+crop,county,sub_county,agro_ecological_zone,season,production_system,planting_start,planting_end,harvest_start,harvest_end,source_organisation,source_title,source_url,source_document,source_page_or_sheet,source_published_date,accessed_date,licence,source_wording,reviewer_role,review_status,last_reviewed_at,notes
+maize,Nakuru,,,SAMPLE,rain-fed,01-01,01-10,05-01,05-10,SAMPLE DATA (not a real source),Importer test fixture,,,sample row 1,,,n/a,,,draft,,SAMPLE ROW FOR TESTING ONLY. NOT AGRONOMIC DATA.
+beans,,,,SAMPLE,rain-fed,01-01,01-10,05-01,05-10,SAMPLE DATA (not a real source),Importer test fixture,,,sample row 2,,,n/a,,,draft,,SAMPLE ROW FOR TESTING ONLY. NOT AGRONOMIC DATA.
+sorghum,Kitui,,,SAMPLE,rain-fed,01-01,01-10,05-01,05-10,SAMPLE DATA (not a real source),Importer test fixture,,,sample row 3,,,n/a,,,draft,,SAMPLE ROW FOR TESTING ONLY. NOT AGRONOMIC DATA.
+green_grams,Makueni,,,SAMPLE,rain-fed,01-01,01-10,05-01,05-10,SAMPLE DATA (not a real source),Importer test fixture,,,sample row 4,,,n/a,,,draft,,SAMPLE ROW FOR TESTING ONLY. NOT AGRONOMIC DATA.
+potatoes,Nyandarua,,,SAMPLE,rain-fed,01-01,01-10,05-01,05-10,SAMPLE DATA (not a real source),Importer test fixture,,,sample row 5,,,n/a,,,draft,,SAMPLE ROW FOR TESTING ONLY. NOT AGRONOMIC DATA.
+wheat,Narok,,,SAMPLE,rain-fed,01-01,01-10,05-01,05-10,SAMPLE DATA (not a real source),Importer test fixture,,,sample row 6,,,n/a,,,draft,,SAMPLE ROW FOR TESTING ONLY. NOT AGRONOMIC DATA.
+tomato,Kiambu,,,SAMPLE,rain-fed,01-01,01-10,05-01,05-10,SAMPLE DATA (not a real source),Importer test fixture,,,sample row 7,,,n/a,,,draft,,SAMPLE ROW FOR TESTING ONLY. NOT AGRONOMIC DATA.
+kale,Kiambu,,,SAMPLE,rain-fed,01-01,01-10,05-01,05-10,SAMPLE DATA (not a real source),Importer test fixture,,,sample row 8,,,n/a,,,draft,,SAMPLE ROW FOR TESTING ONLY. NOT AGRONOMIC DATA.
+cabbage,Nyandarua,,,SAMPLE,rain-fed,01-01,01-10,05-01,05-10,SAMPLE DATA (not a real source),Importer test fixture,,,sample row 9,,,n/a,,,draft,,SAMPLE ROW FOR TESTING ONLY. NOT AGRONOMIC DATA.
+onion,Kajiado,,,SAMPLE,rain-fed,01-01,01-10,05-01,05-10,SAMPLE DATA (not a real source),Importer test fixture,,,sample row 10,,,n/a,,,draft,,SAMPLE ROW FOR TESTING ONLY. NOT AGRONOMIC DATA.
