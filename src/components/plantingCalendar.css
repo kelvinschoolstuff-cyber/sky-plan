@@ -3,20 +3,21 @@
   margin: 0 auto;
   padding: 20px;
   font-family: var(--sans);
-  color: var(--text);
+  color: #2f3e46;
+  background: #f4f6f7;
 }
 
 .calendar-wrap h2 {
   margin: 0 0 12px;
-  color: var(--text-h);
+  color: #1b4332;
 }
 
 .calendar-note {
-  background: var(--accent-bg);
-  border: 1px solid var(--accent-border);
-  color: var(--text-h);
+  background: #e6f2e6;
+  border: 1px solid #bcd9c1;
+  color: #1b4332;
   padding: 12px;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 0.9rem;
   margin: 0 0 24px;
 }
@@ -37,15 +38,20 @@
 .filter label {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--text-h);
+  color: #1b4332;
 }
 
 .filter select {
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--bg);
-  color: var(--text);
+  padding: 10px 14px;
+  border: 1px solid #cdd6d8;
+  border-radius: 8px;
+  background: #f4f6f7;
+  color: #2f3e46;
+}
+
+.filter select:focus {
+  border-color: #5fa8d3;
+  outline: none;
 }
 
 .cards {
@@ -55,10 +61,11 @@
 }
 
 .card {
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 16px;
-  background: var(--bg);
+  border: 1px solid #d9e0e2;
+  border-radius: 16px;
+  padding: 20px;
+  background: #fbfcfc;
+  box-shadow: 0 4px 12px rgba(47, 62, 70, 0.05);
   display: flex;
   flex-direction: column;
 }
@@ -73,88 +80,81 @@
 .card-top h3 {
   margin: 0;
   font-size: 1.2rem;
-  color: var(--accent);
+  color: #1b4332;
 }
 
 .badge {
-  font-size: 0.7rem;
-  padding: 4px 8px;
-  border-radius: 4px;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 20px;
   font-weight: 600;
-  background: var(--social-bg);
-  color: var(--text-h);
-  border: 1px solid var(--border);
-}
-
-.badge.ok {
-  background: var(--accent-bg);
-  border-color: var(--accent-border);
-  color: var(--accent);
-}
-
-.badge.warn {
-  border-color: var(--accent-border);
-  color: var(--accent);
+  background: #e6f2e6;
+  color: #5fa8d3;
+  border: 1px solid #bcd9c1;
 }
 
 .card-info p {
-  margin: 4px 0;
+  margin: 6px 0;
   font-size: 0.9rem;
+  color: #4a5c63;
 }
 
 .dates {
   display: flex;
   gap: 12px;
-  margin: 16px 0;
+  margin: 20px 0;
 }
 
 .date-col {
   flex: 1;
-  background: var(--social-bg);
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
+  background: #eef2f3;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #d9e0e2;
 }
 
 .date-col span {
   display: block;
   font-size: 0.75rem;
   text-transform: uppercase;
-  color: var(--text);
+  color: #6b7c82;
   margin-bottom: 4px;
 }
 
 .date-col strong {
-  font-size: 0.9rem;
-  color: var(--text-h);
+  font-size: 0.95rem;
+  color: #1b4332;
 }
 
 .source {
   margin-top: auto;
-  border-top: 1px solid var(--border);
-  padding-top: 12px;
+  border-top: 1px solid #d9e0e2;
+  padding-top: 16px;
   font-size: 0.85rem;
 }
 
 .source summary {
   cursor: pointer;
-  color: var(--accent);
+  color: #5fa8d3;
   font-weight: 600;
 }
 
 .source p {
-  margin: 4px 0;
+  margin: 6px 0;
+  color: #4a5c63;
 }
 
 .source .note {
   font-style: italic;
+  color: #6b7c82;
 }
 
 .source a {
   display: inline-block;
-  margin-top: 8px;
-  color: var(--accent);
+  margin-top: 10px;
+  color: #5fa8d3;
   text-decoration: none;
+  font-weight: 600;
 }
 
 .source a:hover {
@@ -165,7 +165,7 @@
   grid-column: 1 / -1;
   text-align: center;
   padding: 40px;
+  color: #6b7c82;
   font-style: italic;
 }
-
 
