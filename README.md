@@ -1,16 +1,35 @@
-# React + Vite
+# AgriCast
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AgriCast is a React weather dashboard for checking current conditions, hourly and seven-day forecasts, and general farming guidance for a searched location.
 
-Currently, two official plugins are available:
+## Requirements
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Install Node.js and npm before setting up the project.
 
-## React Compiler
+## Standard Setup
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+For computers using a regular local drive, run these commands from the project folder:
 
-## Expanding the ESLint configuration
+```sh
+npm install
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Open the local URL printed by Vite, usually `http://localhost:5173/`.
+
+## External exFAT Drive
+
+Only use these commands if the project is stored on an exFAT USB or external drive on Linux. exFAT does not support the symlinks npm normally creates, so install without npm's command links and start Vite directly:
+
+```sh
+npm install --no-bin-links
+node ./node_modules/vite/bin/vite.js
+```
+
+This workaround is supplied on the command line for this install only. The project does not set a shared npm configuration, so teammates using regular drives can use the standard setup above. On the exFAT drive, run lint or build directly when needed:
+
+```sh
+node ./node_modules/eslint/bin/eslint.js .
+node ./node_modules/vite/bin/vite.js build
+```
+
