@@ -8,6 +8,7 @@ export async function searchLocations(query) {
     name: query,
     count: "6",
     language: "en",
+    countryCode: "KE",
     format: "json",
   });
 
@@ -18,7 +19,7 @@ export async function searchLocations(query) {
   }
 
   const geoData = await geoResponse.json();
-  return geoData.results ?? [];
+  return (geoData.results ?? []).filter((location) => location.country_code === "KE");
 }
 
 // Fetch the forecast by exact coordinates or geocode a plain city name first.

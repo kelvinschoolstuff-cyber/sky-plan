@@ -430,7 +430,7 @@ function Dashboard() {
                   onKeyDown={handleLocationKeyDown}
                   onFocus={() => setSuggestionsEnabled(true)}
                   onBlur={() => setSuggestionsOpen(false)}
-                  placeholder="Search a city or town"
+                  placeholder="Search a Kenyan city or town"
                 />
                 <button type="submit" disabled={loading || !city.trim()} aria-label="Search location">
                   {loading ? "..." : "→"}
@@ -456,7 +456,7 @@ function Dashboard() {
                 </div>
               )}
               {suggestionsLoading && city.trim().length >= 2 && (
-                <span className="suggestion-status" role="status">Finding places...</span>
+                <span className="suggestion-status" role="status">Finding Kenyan places...</span>
               )}
             </div>
           </form>
@@ -471,7 +471,7 @@ function Dashboard() {
           <div className="location-prompt">
             <span className="prompt-mark" aria-hidden="true">⌖</span>
             <h2>Where is your farm?</h2>
-            <p>Type a town or city above to see its weather forecast.</p>
+            <p>Type a Kenyan town or city above to see its weather forecast.</p>
           </div>
         )}
 
