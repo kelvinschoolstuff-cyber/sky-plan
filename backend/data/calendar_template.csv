@@ -1,0 +1,10 @@
+# AgriCast crop calendar import template. One row per source record. Lines starting with # are ignored.
+# Real sources to take records from (check the licence, edition and update date on the actual files first):
+# FAO Crop Calendar: https://cropcalendar.apps.fao.org/
+# KALRO / FAO Kenya Crop Calendar (XLS): https://staging.sproutopencontent.com/dataset/kenya-crop-calendar-fao
+# KALRO Crop Cycle resource: https://staging.sproutopencontent.com/dataset/kenya-crop-calendar-kalro
+# KMD Agrometeorology: https://meteo.go.ke/Services/agrometeorology/
+# KMD Monthly Agrometeorological Bulletin: https://meteo.go.ke/our-products/monthly-agrometeorological-bulletin/
+# Dates are MM-DD. review_status: draft | source-checked | locally reviewed | uncertain. Leave county blank when the source only covers a broader region.
+# Never copy one county's dates into another county's row.
+crop,county,sub_county,agro_ecological_zone,season,production_system,planting_start,planting_end,harvest_start,harvest_end,source_organisation,source_title,source_url,source_document,source_page_or_sheet,source_published_date,accessed_date,licence,source_wording,reviewer_role,review_status,last_reviewed_at,notes
