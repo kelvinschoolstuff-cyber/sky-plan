@@ -3,6 +3,7 @@ import "./App.css";
 
 import SearchForm from "./components/SearchForm";
 import CurrentWeather from "./components/CurrentWeather";
+import PlantingCalendar from "./components/PlantingCalendar";
 import { fetchWeather } from "./services/WeatherApi";
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
             />
           )}
         </section>
+        <PlantingCalendar />
       </main>
     </div>
   );
