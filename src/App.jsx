@@ -3,7 +3,11 @@ import "./App.css";
 
 import SearchForm from "./components/SearchForm";
 import CurrentWeather from "./components/CurrentWeather";
+import HourlyForecast from "./components/HourlyForecast";
+import WeeklyForecast from "./components/WeeklyForecast";
+import Guidance from "./components/Guidance";
 import PlantingCalendar from "./components/PlantingCalendar";
+
 import { fetchWeather } from "./services/WeatherApi";
 
 function App() {
@@ -52,10 +56,15 @@ function App() {
           {error && <p className="error-message">{error}</p>}
 
           {weatherData && (
-            <CurrentWeather
-              location={weatherData.location}
-              weather={weatherData.weather}
-            />
+            <>
+              <CurrentWeather
+                location={weatherData.location}
+                weather={weatherData.weather}
+              />
+              <HourlyForecast hourly={weatherData.weather.hourly} />
+              <WeeklyForecast daily={weatherData.weather.daily} />
+              <Guidance weather={weatherData.weather} />
+            </>
           )}
         </section>
 

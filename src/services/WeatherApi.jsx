@@ -31,9 +31,9 @@ export async function fetchWeather(city) {
     current:
       "temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m",
 
-    hourly: "temperature_2m,precipitation_probability,weather_code",
+    hourly: "temperature_2m,precipitation_probability,precipitation,weather_code",
 
-    daily: "weather_code,temperature_2m_max,temperature_2m_min",
+    daily: "weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum",
 
     timezone: "auto",
     forecast_days: "7",
