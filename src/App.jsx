@@ -6,6 +6,8 @@ import CurrentWeather from "./components/CurrentWeather";
 import HourlyForecast from "./components/HourlyForecast";
 import WeeklyForecast from "./components/WeeklyForecast";
 import Guidance from "./components/Guidance";
+import PlantingCalendar from "./components/PlantingCalendar";
+
 import { fetchWeather } from "./services/WeatherApi";
 
 function App() {
@@ -64,6 +66,10 @@ function App() {
               <Guidance weather={weatherData.weather} />
             </>
           )}
+        </section>
+
+        <section className="planting-calendar-section">
+          <PlantingCalendar />
         </section>
       </main>
     </div>

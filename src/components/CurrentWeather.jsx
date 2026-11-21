@@ -1,3 +1,5 @@
+import "./CurrentWeather.css";
+
 function CurrentWeather({ location, weather }) {
   const current = weather.current;
 
