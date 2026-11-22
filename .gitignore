@@ -22,3 +22,20 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Python virtual environments
+.venv/
+backend/.venv/
+
+
+# Environment variables
+.env
+backend/.env
+
+# Flask
+instance/
