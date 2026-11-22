@@ -1,3 +1,142 @@
+
+.forecast-section {
+  margin: 24px 0;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #e1e9e2;
+  border-radius: 12px;
+  color: #34463c;
+}
+
+.forecast-section h2 {
+  margin: 0 0 16px;
+  color: #1b4332;
+}
+
+.forecast-table-wrap {
+  overflow-x: auto;
+  border: 1px solid #d5e0d7;
+  border-radius: 8px;
+}
+
+.forecast-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  background: #ffffff;
+}
+
+.forecast-table th,
+.forecast-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e1e9e2;
+  color: #34463c;
+}
+
+.forecast-table thead th {
+  color: #ffffff;
+  background: #1b4332;
+  font-weight: 600;
+}
+
+.forecast-table tbody th {
+  color: #1b4332;
+  background: #f0f5f0;
+  font-weight: 600;
+}
+
+.forecast-table tbody tr:hover {
+  background: #f5f8f5;
+}
+
+.forecast-table tbody tr:last-child th,
+.forecast-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.forecast-empty {
+  color: #526359;
+  padding: 12px 0;
+}
+
+/* Farming guidance */
+
+.guidance-disclaimer {
+  color: #526359;
+  margin: 8px 0;
+  font-size: 0.9rem;
+}
+
+.guidance-threshold-note {
+  color: #34463c;
+  margin: 8px 0;
+  font-size: 0.9rem;
+}
+
+.guidance-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 16px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.guidance-item {
+  padding: 18px;
+  background: #f5f8f5;
+  border: 1px solid #d5e0d7;
+  border-radius: 10px;
+}
+
+.guidance-item h3 {
+  margin: 0 0 10px;
+  color: #1b4332;
+  font-size: 1.05rem;
+}
+
+.guidance-item p {
+  color: #34463c;
+  line-height: 1.6;
+}
+
+.guidance-source {
+  margin-top: 12px;
+  overflow-wrap: anywhere;
+  color: #526359;
+}
+
+.guidance-source a {
+  color: #176b45;
+  font-weight: 600;
+}
+
+.guidance-source a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .forecast-section {
+    padding: 18px 14px;
+  }
+
+  .forecast-table th,
+  .forecast-table td {
+    padding: 9px;
+  }
+
+  .guidance-item {
+    padding: 14px;
+  }
+}
+
+
+
+
+
+/*
 .forecast-section {
   margin: 24px 0;
   padding: 20px 0;
