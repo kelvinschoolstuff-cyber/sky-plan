@@ -1,0 +1,31 @@
+from dotenv import load_dotenv
+
+load_dotenv()
+
+import os
+from flask import Flask
+from flask_cors import CORS
+
+from app.config import Config
+from app.extensions import db, migrate, bcrypt
+from app.models import User, Farm, PlantingPlan
+
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+
+    db.init_app(app)
+    migrate.init_app(app, db)
+    bcrypt.init_app(app)
+
+    CORS(
+        app,
+        origins=[os.environ.get("FRONTEND_ORIGIN", "http://localhost:5173")],
+        supports_credentials=True,
+    )
+
+    @app.route("/")
+    def index():
+        return{"message": "Agricast API is running"}
+
+    return app
