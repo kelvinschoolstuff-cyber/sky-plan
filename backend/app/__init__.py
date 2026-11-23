@@ -8,7 +8,14 @@ from flask_cors import CORS
 
 from app.config import Config
 from app.extensions import db, migrate, bcrypt
-from app.models import User, Farm, PlantingPlan
+from app.models import (
+    User, 
+    Farm, 
+    PlantingPlan,
+    Crop,
+    Source,
+    CropCalendar,
+    )
 
 def create_app():
     app = Flask(__name__)
