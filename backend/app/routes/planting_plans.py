@@ -6,6 +6,7 @@ from flask import Blueprint, g, jsonify, request, session
 
 from app.extensions import db
 from app.models import Crop, Farm, PlantingPlan
+from sqlalchemy.exc import SQLAlchemyError
 
 bp = Blueprint("planting_plans", __name__, url_prefix="/api")
 
@@ -15,12 +16,30 @@ WRITE_FIELDS = {
     "expected_harvest_date", "acreage", "status", "notes",
 }
 
+ALLOWED_STATUSES = {
+    "planned",
+    "in_progress",
+    "harvested",
+    "cancelled",
+}
+
 
 def _error(message, status, details=None):
     body = {"error": message}
     if details is not None:
         body["details"] = details
     return jsonify(body), status
+
+def _commit_changes():
+    try:
+        db.session.commit()
+        return None
+    except SQLAlchemyError:
+        db.session.rollback()
+        return _error(
+            "A database error occured. Please try again.",
+            500
+        )
 
 
 @bp.before_request
@@ -132,10 +151,17 @@ def _validate_payload(payload, plan=None):
 
     if "status" in payload:
         status = payload["status"]
-        if not isinstance(status, str) or not status.strip() or len(status) > 30:
-            errors["status"] = "Must be text, up to 30 characters"
+
+        if isinstance(status, str):
+            status = status.strip()
+
+        if not isinstance(status, str) or status not in ALLOWED_STATUSES:
+            errors["status"] = (
+                f"Must be one of: {', '.join(sorted(ALLOWED_STATUSES))}"
+            )
         else:
-            changes["status"] = status.strip()
+            changes["status"] = status
+
     elif plan is None:
         changes["status"] = "planned"
 
@@ -207,20 +233,41 @@ def list_planting_plans():
 
 @bp.post("/farms/<int:farm_id>/planting-plans")
 def create_planting_plan(farm_id):
+    # Confirm that the farm belongs to the logged-in user.
     farm = _owned_farm(farm_id)
+
     if farm is None:
         return _error("Farm not found", 404)
 
-    changes, errors = _validate_payload(request.get_json(silent=True))
+    payload = request.get_json(silent=True)
+
+    if not isinstance(payload, dict):
+        return _error("Send a JSON object", 400)
+
+    # _validate_payload rejects farm_id, user_id and other
+    # fields that are not in WRITE_FIELDS.
+    changes, errors = _validate_payload(payload)
+
     if errors:
         return _error("Validation failed", 400, errors)
 
-    plan = PlantingPlan(farm_id=farm.id, **changes)
+    plan = PlantingPlan(
+        farm_id=farm.id,
+        **changes
+    )
+
     db.session.add(plan)
-    db.session.commit()
 
-    return jsonify({"message": "Created", "data": _serialize(plan)}), 201
+    error_response = _commit_changes()
 
+    if error_response:
+        return error_response
+
+    return jsonify({
+        "message": "Planting plan created successfully",
+        "data": _serialize(plan)
+    }), 201
+    
 
 @bp.get("/planting-plans/<int:plan_id>")
 def get_planting_plan(plan_id):
@@ -243,8 +290,15 @@ def update_planting_plan(plan_id):
     for field, value in changes.items():
         setattr(plan, field, value)
 
-    db.session.commit()
-    return jsonify({"message": "Updated", "data": _serialize(plan)})
+    error_response = _commit_changes()
+
+    if error_response:
+        return error_response
+    
+    return jsonify({
+        "message": "Updated",
+        "data": _serialize(plan)
+    })
 
 
 @bp.delete("/planting-plans/<int:plan_id>")
@@ -254,5 +308,10 @@ def delete_planting_plan(plan_id):
         return _error("Not found", 404)
 
     db.session.delete(plan)
-    db.session.commit()
+    
+    error_response = _commit_changes()
+
+    if error_response:
+        return error_response
+    
     return jsonify({"message": "Deleted"})

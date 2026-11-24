@@ -8,6 +8,7 @@ from flask_cors import CORS
 
 from app.config import Config
 from app.extensions import db, migrate, bcrypt
+from app.routes.planting_plans import bp as planting_plans_bp
 from app.models import (
     User, 
     Farm, 
@@ -20,6 +21,7 @@ from app.models import (
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+    app.register_blueprint(planting_plans_bp)
 
     db.init_app(app)
     migrate.init_app(app, db)

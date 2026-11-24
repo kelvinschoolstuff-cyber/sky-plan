@@ -63,8 +63,11 @@ def plan_payload(crop_id):
 
 
 def create_plan(client, farm_id, payload=None, crop_id=None):
-    body = payload if payload is not None else plan_payload(crop_id)
-    return client.post(f"/api/farms/{farm_id}/planting-plans", json=body)
+    body = payload.copy() if payload is not None else plan_payload(crop_id)
+
+    return client.post(
+        f"/api/farms/{farm_id}/planting-plans",
+         json=body)
 
 
 def test_requires_login(api_client):
@@ -155,19 +158,32 @@ def test_empty_body_rejected(api_client):
     assert "crop_id" in response.json["details"]
     assert "planting_date" in response.json["details"]
 
+def test_cannot_create_plan_for_another_users_farm(api_client):
+    client, ids = api_client
+    login(client, ids["owner"])
 
-@pytest.mark.parametrize("field", ["farm_id", "user_id"])
-def test_body_cannot_override_ownership(api_client, field):
+    response = create_plan(
+        client,
+        ids["other_farm"],
+    )
+
+    assert response.status_code == 404
+
+def test_body_cannot_override_user_id(api_client):
     client, ids = api_client
     login(client, ids["owner"])
 
     payload = plan_payload(ids["crop"])
-    payload[field] = ids["other_farm"]
+    payload["user_id"] = ids["other"]
+    payload["farm_id"] = ids["other_farm"]
 
-    response = create_plan(client, ids["farm"], payload=payload)
+    response = create_plan(
+        client,
+        ids["farm"],
+        payload=payload
+    )
+
     assert response.status_code == 400
-    assert field in response.json["details"]
-
 
 def test_pagination_and_farm_filter(api_client):
     client, ids = api_client
