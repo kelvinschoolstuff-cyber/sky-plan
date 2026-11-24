@@ -6,9 +6,9 @@ import os
 from flask import Flask
 from flask_cors import CORS
 
+from app.routes.planting_plans import bp as planting_plans_bp
 from app.config import Config
 from app.extensions import db, migrate, bcrypt
-from app.routes.planting_plans import bp as planting_plans_bp
 from app.models import (
     User, 
     Farm, 

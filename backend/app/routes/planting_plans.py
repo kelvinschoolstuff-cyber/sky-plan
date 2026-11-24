@@ -230,10 +230,8 @@ def list_planting_plans():
         },
     })
 
-
 @bp.post("/farms/<int:farm_id>/planting-plans")
 def create_planting_plan(farm_id):
-    # Confirm that the farm belongs to the logged-in user.
     farm = _owned_farm(farm_id)
 
     if farm is None:
@@ -244,13 +242,11 @@ def create_planting_plan(farm_id):
     if not isinstance(payload, dict):
         return _error("Send a JSON object", 400)
 
-    # _validate_payload rejects farm_id, user_id and other
-    # fields that are not in WRITE_FIELDS.
     changes, errors = _validate_payload(payload)
 
     if errors:
         return _error("Validation failed", 400, errors)
-
+    
     plan = PlantingPlan(
         farm_id=farm.id,
         **changes
@@ -262,7 +258,7 @@ def create_planting_plan(farm_id):
 
     if error_response:
         return error_response
-
+    
     return jsonify({
         "message": "Planting plan created successfully",
         "data": _serialize(plan)
