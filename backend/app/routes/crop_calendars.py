@@ -9,7 +9,7 @@ crop_calendars_bp = Blueprint("crop_calendars", __name__, url_prefix="/api")
 
 EXACT_FILTERS = {
     "county": CropCalendar.county,
-    "sub_county": CropCalendar.sub_county,
+    "sub_county": CropCalendar.subcounty,
     "season": CropCalendar.season,
 }
 

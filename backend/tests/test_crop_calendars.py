@@ -13,8 +13,8 @@ def test_calendar_detail_has_source_attribution(auth_client, calendars, source):
     assert response.status_code == 200
     data = response.get_json()["data"]
     assert data["crop_name"] == "Maize"
-    assert data["planting_window"] == {"start": "15 Mar", "end": "1 Apr"}
-    assert data["harvest_window"] == {"start": "15 Sep", "end": "1 Jan"}
+    assert data["planting_window"] == "15 Mar - 1 Apr"
+    assert data["harvest_window"] == "15 Sep - 1 Jan"
     assert data["verification_status"] == "unverified"
     assert data["source_id"] == source.id
     assert data["source"] == {
@@ -25,7 +25,7 @@ def test_calendar_detail_has_source_attribution(auth_client, calendars, source):
 
 def test_calendar_unavailable_values_are_null_not_invented(auth_client, calendars):
     data = auth_client.get(f"/api/crop-calendars/{calendars[1].id}").get_json()["data"]
-    assert data["planting_window"] == {"start": None, "end": None}
+    assert data["planting_window"] is None
     assert data["verification_status"] == "needs_review"
 
 

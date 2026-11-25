@@ -100,14 +100,13 @@ def calendars(crops, source):
     rows = [
         CropCalendar(crop_id=crops["maize"].id, county="Nakuru",
                      agroecological_zone="Upper Highland Zone 1 (UH 1)", season="Long rains",
-                     planting_start="15 Mar", planting_end="1 Apr", harvest_start="15 Sep",
-                     harvest_end="1 Jan", source_id=source.id, verification_status="unverified"),
+                     planting_window="15 Mar - 1 Apr", harvest_window="15 Sep - 1 Jan", source_id=source.id, verification_status="unverified"),
         CropCalendar(crop_id=crops["maize"].id, county="Kisii",
                      agroecological_zone="Lower Midland Zone 4 (LM4)", season="Short rains",
-                     source_id=source.id, verification_status="needs_review"),
+                     planting_window=None, harvest_window=None, source_id=source.id, verification_status="needs_review"),
         CropCalendar(crop_id=crops["beans"].id, county="Nakuru",
                      agroecological_zone="Upper Highland Zone 1 (UH 1)", season="Short rains",
-                     source_id=source.id),
+                     planting_window=None, harvest_window=None, source_id=source.id),
     ]
     db.session.add_all(rows)
     db.session.commit()
