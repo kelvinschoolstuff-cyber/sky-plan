@@ -1,21 +1,52 @@
 # Agricast
 
-Agricast is a Phase 1 React application that helps farmers check weather for a place before making field-work and planting plans. Users enter a place, choose from live suggestions, then review current weather, hourly conditions, a seven-day forecast, and a general weather-based field note.
+Agricast helps farmers check weather for a place before making field-work and planting plans. Users enter a place, choose from live suggestions, then review current weather, hourly conditions, a seven-day forecast, and a general weather-based field note. A Flask API provides email/password signup, login, logout, and session checking.
 
-This is a frontend-only project. It calls Open-Meteo directly and stores the last selected location in the browser's local storage. It does not have a Flask server, database, or user accounts.
+The React application calls Open-Meteo directly and stores the last selected location in the browser's local storage. The Flask API stores user accounts in SQLite and stores sessions server-side.
 
-## Run the application
+## Run the frontend
 
 ```sh
 npm install
 npm run dev
 ```
 
-Useful checks:
+The Vite development server proxies `/api` requests to `http://127.0.0.1:5000`.
+
+## Run the API
+
+Use Python 3.10 or later:
+
+```sh
+python3 -m venv .venv
+. .venv/bin/activate
+python3 -m pip install -r backend/requirements-dev.txt
+python3 -m flask --app backend:create_app run --debug
+```
+
+In another terminal, run the frontend with `npm run dev`. The backend creates its SQLite database and server-side session directory in `backend/instance/`.
+
+Set `SECRET_KEY` to a persistent, randomly generated secret before deployment. `APP_ENV=production` requires it. Configure `CORS_ORIGINS` as a comma-separated list of exact frontend origins (the local Vite origins are allowed by default). For HTTPS deployments, set `SESSION_COOKIE_SECURE=true`; cookies are HTTP-only and use `SameSite=Lax` by default. Keep the frontend and API on the same site when using the default cookie policy. Server-side session data is stored in `backend/instance/sessions/` by default.
+
+## Authentication API
+
+All endpoints accept and return JSON:
+
+| Endpoint | Success response | Errors |
+| --- | --- | --- |
+| `POST /api/signup` | `201 {"user":{"id":1,"username":"...","email":"..."}}` | `400` invalid input, `409` duplicate username/email |
+| `POST /api/login` | `200 {"user":{"id":1,"username":"...","email":"..."}}` | `400` missing input, generic `401` invalid credentials |
+| `POST /api/logout` | `200 {"message":"Logged out successfully."}` | — |
+| `GET /api/check_session` | `200 {"authenticated":true,"user":{...}}` or `200 {"authenticated":false,"user":null}` | — |
+
+Usernames are 3–32 characters, email addresses are limited to 254 characters, and passwords must be at least 8 characters and no more than 72 UTF-8 bytes (the bcrypt input limit). Usernames and email addresses are unique without regard to case. Password hashes are never included in API responses. Protected Flask views can use `login_required` from `backend.auth`; unauthenticated requests receive `401`.
+
+## Checks
 
 ```sh
 npm run lint
 npm run build
+python3 -m pytest backend/tests
 ```
 
 ## Project map
@@ -31,6 +62,11 @@ Line numbers below refer to this source snapshot and may change as the app is ed
 | `src/index.css` | Global styles, theme variables, typography defaults, and base element rules. |
 | `index.html` | Browser document title, viewport, metadata, and the React root element. |
 | `package.json` | Dependencies and commands for development, linting, and production builds. |
+| `backend/__init__.py` | Flask app factory, CORS/session configuration, and database initialization. |
+| `backend/auth.py` | Authentication endpoints, validation, and the `login_required` decorator. |
+| `backend/models.py` | SQLAlchemy user model and stored password hash. |
+| `backend/tests/test_auth.py` | Signup, login, session, logout, and protected-route tests. |
+| `backend/requirements.txt` | Flask API runtime dependencies. |
 
 The dashboard sections are currently kept in `Dashboard` in `src/App.jsx`; there are no separate component files under `src/components`.
 
@@ -80,4 +116,4 @@ For a personal reflection, describe what you learned, which part you found most 
 
 ## Future phases
 
-Phase 2 can replace the direct public API request with a Flask backend while keeping the React dashboard's data shape stable. Phase 3 can add authentication and user-owned farms or saved plans. Those features are not part of this Phase 1 application.
+The Flask backend is the first step toward user-owned farms or saved plans. The current React screens do not yet include signup or login forms, and the weather dashboard remains independent of user accounts.
