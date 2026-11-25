@@ -410,7 +410,6 @@ const calendarEntries = [
     harvestStart: "15 Dec",
     harvestEnd: "1 Feb",
     harvestEndNextYear: true,
-    harvestEndNextYear: true,
     productionSystem: null,
     source: faoSource,
     sourceUrl: sourceUrl("0027"),

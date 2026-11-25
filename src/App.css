@@ -159,3 +159,35 @@ select {
     margin-top: 26px;
   }
 }
+
+.app-header nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.app-header nav a {
+  color: white;
+  text-decoration: none;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.app-header nav a:hover {
+  background-color: #2d6a4f;
+}
+
+.app-header nav a.active {
+  background-color: #40916c;
+  font-weight: 600;
+}
+
+.page-section h2,
+.weather-section h2,
+.planting-calendar-section h2 {
+  color: #1b4332;
+  font-weight: 600;
+}

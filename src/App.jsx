@@ -1,78 +1,25 @@
-import { useState } from "react";
-import "./App.css";
+import { Routes, Route } from "react-router-dom";
 
-import SearchForm from "./components/SearchForm";
-import CurrentWeather from "./components/CurrentWeather";
-import HourlyForecast from "./components/HourlyForecast";
-import WeeklyForecast from "./components/WeeklyForecast";
-import Guidance from "./components/Guidance";
-import PlantingCalendar from "./components/PlantingCalendar";
-
-import { fetchWeather } from "./services/WeatherApi";
+import MainLayout from "./layouts/MainLayout";
+import Dashboard from "./pages/Dashboard";
+import Weather from "./pages/Weather";
+import PlantingCalendar from "./pages/PlantingCalendar";
+import Crops from "./pages/Crops";
+import Farms from "./pages/Farms";
+import PlantingPlans from "./pages/PlantingPlans";
 
 function App() {
-  const [city, setCity] = useState("");
-  const [weatherData, setWeatherData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-
-  async function handleSearch() {
-    if (!city.trim()) return;
-
-    setLoading(true);
-    setError("");
-
-    try {
-      const result = await fetchWeather(city.trim());
-      setWeatherData(result);
-    } catch (err) {
-      setError(err.message);
-      setWeatherData(null);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>Agricast</h1>
-        <p>Agricultural planning and Weather Advisory Platform</p>
-        <span>Kenya</span>
-      </header>
-
-      <main>
-        <section className="weather-section">
-          <h2>Weather Dashboard</h2>
-          <p>Check weather conditions for your farming location.</p>
-
-          <SearchForm
-            city={city}
-            setCity={setCity}
-            onSearch={handleSearch}
-            loading={loading}
-          />
-
-          {error && <p className="error-message">{error}</p>}
-
-          {weatherData && (
-            <>
-              <CurrentWeather
-                location={weatherData.location}
-                weather={weatherData.weather}
-              />
-              <HourlyForecast hourly={weatherData.weather.hourly} />
-              <WeeklyForecast daily={weatherData.weather.daily} />
-              <Guidance weather={weatherData.weather} />
-            </>
-          )}
-        </section>
-
-        <section className="planting-calendar-section">
-          <PlantingCalendar />
-        </section>
-      </main>
-    </div>
+    <Routes>
+      <Route element={<MainLayout />}>
+        <Route index element={<Dashboard />} />
+        <Route path="weather" element={<Weather />} />
+        <Route path="planting-calendar" element={<PlantingCalendar />} />
+        <Route path="crops" element={<Crops />} />
+        <Route path="farms" element={<Farms />} />
+        <Route path="planting-plans" element={<PlantingPlans />} />
+      </Route>
+    </Routes>
   );
 }
 
