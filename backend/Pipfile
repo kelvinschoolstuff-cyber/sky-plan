@@ -22,9 +22,11 @@ flask-bcrypt = "*"
 flask-cors = "*"
 psycopg2-binary = "*"
 python-dotenv = "*"
+psycopg = {extras = ["binary"], version = "*"}
 
 [dev-packages]
 pytest = "*"
+psycopg2-binary = "*"
 
 [requires]
 python_version = "3.12"
