@@ -19,7 +19,10 @@ def app(tmp_path: Path) -> Iterator:
             "SQLALCHEMY_DATABASE_URI": f"sqlite:///{tmp_path / 'auth-test.sqlite3'}",
             "SESSION_CACHE_DIR": str(tmp_path / "sessions"),
             "SESSION_COOKIE_SECURE": True,
-            "CORS_ORIGINS": ["http://localhost:5173"],
+            "CORS_ORIGINS": [
+                "http://localhost:5173",
+                "http://127.0.0.1:5173",
+                ],
         }
     )
 
