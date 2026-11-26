@@ -1,64 +1,73 @@
-const weatherLabels = {
-  0: "Clear sky",
-  1: "Mostly clear",
-  2: "Partly cloudy",
-  3: "Overcast",
-  45: "Fog",
-  48: "Fog",
-  51: "Drizzle",
-  53: "Drizzle",
-  55: "Heavy drizzle",
-  61: "Light rain",
-  63: "Rain",
-  65: "Heavy rain",
-  80: "Rain showers",
-  81: "Rain showers",
-  82: "Heavy showers",
-  95: "Thunderstorm",
-  96: "Thunderstorm",
-  99: "Thunderstorm",
+import "./weatherForecast.css";
+
+const weatherDescriptions = {
+	0: "Clear sky",
+	1: "Mainly clear",
+	2: "Partly cloudy",
+	3: "Overcast",
+	45: "Fog",
+	48: "Depositing rime fog",
+	51: "Light drizzle",
+	53: "Moderate drizzle",
+	55: "Dense drizzle",
+	61: "Slight rain",
+	63: "Moderate rain",
+	65: "Heavy rain",
+	71: "Slight snow",
+	73: "Moderate snow",
+	75: "Heavy snow",
+	80: "Rain showers",
+	81: "Moderate rain showers",
+	82: "Violent rain showers",
+	95: "Thunderstorm",
+	96: "Thunderstorm with hail",
+	99: "Thunderstorm with heavy hail",
 };
 
 function formatHour(value) {
-  const hour = Number(value.slice(11, 13));
-  return new Date(Date.UTC(2020, 0, 1, hour)).toLocaleTimeString("en", {
-    hour: "numeric",
-    timeZone: "UTC",
-  });
+	return new Date(`${value}:00Z`).toLocaleString(undefined, {
+		weekday: "short",
+		hour: "numeric",
+		timeZone: "UTC",
+	});
 }
 
 function HourlyForecast({ hourly }) {
-  if (!hourly?.time?.length) {
-    return <p role="status">Hourly forecast is unavailable.</p>;
-  }
+	const hours = hourly?.time?.slice(0, 24) ?? [];
 
-  const firstDay = hourly.time[0].slice(0, 10);
-  const entries = hourly.time
-    .map((time, index) => ({
-      time,
-      temperature: hourly.temperature_2m?.[index],
-      rainChance: hourly.precipitation_probability?.[index],
-      code: hourly.weather_code?.[index],
-      hour: Number(time.slice(11, 13)),
-    }))
-    .filter((entry) => entry.time.startsWith(firstDay))
-    .filter((entry) => entry.hour >= 6 && entry.hour <= 18 && entry.hour % 2 === 0);
-
-  return (
-    <section aria-labelledby="hourly-forecast-title">
-      <h2 id="hourly-forecast-title">By the hour</h2>
-      <div className="hourly-strip">
-        {entries.map((entry) => (
-          <article className="hour-item" key={entry.time}>
-            <span className="hour-time">{formatHour(entry.time)}</span>
-            <span>{weatherLabels[entry.code] ?? "Variable conditions"}</span>
-            <strong>{entry.temperature == null ? "--" : `${Math.round(entry.temperature)}°`}</strong>
-            <span>{entry.rainChance == null ? "Rain --" : `Rain ${Math.round(entry.rainChance)}%`}</span>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
+	return (
+		<section className="forecast-section" aria-labelledby="hourly-forecast-title">
+			<h2 id="hourly-forecast-title">Hourly forecast</h2>
+			{hours.length ? (
+				<div className="forecast-table-wrap">
+					<table className="forecast-table">
+						<thead>
+							<tr>
+								<th scope="col">Time</th>
+								<th scope="col">Conditions</th>
+								<th scope="col">Temperature</th>
+								<th scope="col">Rain chance</th>
+								<th scope="col">Rainfall</th>
+							</tr>
+						</thead>
+						<tbody>
+							{hours.map((time, index) => (
+								<tr key={time}>
+									<th scope="row">{formatHour(time)}</th>
+									<td>{weatherDescriptions[hourly.weather_code?.[index]] ?? "Conditions unavailable"}</td>
+									<td>{hourly.temperature_2m?.[index] ?? "-"}°C</td>
+									<td>{hourly.precipitation_probability?.[index] ?? "-"}%</td>
+									<td>{hourly.precipitation?.[index] ?? "-"} mm</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			) : (
+				<p className="forecast-empty">Hourly forecast is not available.</p>
+			)}
+		</section>
+	);
 }
 
 export default HourlyForecast;

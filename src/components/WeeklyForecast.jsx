@@ -1,67 +1,74 @@
-const weatherLabels = {
-  0: "Clear sky",
-  1: "Mostly clear",
-  2: "Partly cloudy",
-  3: "Overcast",
-  45: "Fog",
-  48: "Fog",
-  51: "Drizzle",
-  53: "Drizzle",
-  55: "Heavy drizzle",
-  61: "Light rain",
-  63: "Rain",
-  65: "Heavy rain",
-  71: "Snow",
-  73: "Snow",
-  75: "Heavy snow",
-  80: "Rain showers",
-  81: "Rain showers",
-  82: "Heavy showers",
-  95: "Thunderstorm",
-  96: "Thunderstorm",
-  99: "Thunderstorm",
+import "./weatherForecast.css";
+
+const weatherDescriptions = {
+	0: "Clear sky",
+	1: "Mainly clear",
+	2: "Partly cloudy",
+	3: "Overcast",
+	45: "Fog",
+	48: "Depositing rime fog",
+	51: "Light drizzle",
+	53: "Moderate drizzle",
+	55: "Dense drizzle",
+	61: "Slight rain",
+	63: "Moderate rain",
+	65: "Heavy rain",
+	71: "Slight snow",
+	73: "Moderate snow",
+	75: "Heavy snow",
+	80: "Rain showers",
+	81: "Moderate rain showers",
+	82: "Violent rain showers",
+	95: "Thunderstorm",
+	96: "Thunderstorm with hail",
+	99: "Thunderstorm with heavy hail",
 };
 
-function formatDay(date, index) {
-  if (index === 0) return "Today";
-  return new Date(`${date}T00:00:00Z`).toLocaleDateString("en", {
-    weekday: "short",
-    timeZone: "UTC",
-  });
+function formatDate(value) {
+	return new Date(`${value}T00:00:00Z`).toLocaleDateString(undefined, {
+		weekday: "short",
+		month: "short",
+		day: "numeric",
+		timeZone: "UTC",
+	});
 }
 
 function WeeklyForecast({ daily }) {
-  if (!daily?.time?.length) {
-    return <p role="status">Weekly forecast is unavailable.</p>;
-  }
+	const days = daily?.time ?? [];
 
-  return (
-    <section aria-labelledby="weekly-forecast-title">
-      <h2 id="weekly-forecast-title">7-day forecast</h2>
-      <div className="forecast-strip">
-        {daily.time.map((date, index) => (
-          <article className={`forecast-day ${index === 0 ? "forecast-today" : ""}`} key={date}>
-            <span className="forecast-day-name">{formatDay(date, index)}</span>
-            <span className="forecast-description">
-              {weatherLabels[daily.weather_code?.[index]] ?? "Variable conditions"}
-            </span>
-            <span className="forecast-temperatures">
-              <strong>{daily.temperature_2m_max?.[index] == null ? "--" : `${Math.round(daily.temperature_2m_max[index])}°`}</strong>
-              <span>{daily.temperature_2m_min?.[index] == null ? "--" : `${Math.round(daily.temperature_2m_min[index])}°`}</span>
-            </span>
-            <span className="forecast-rain">
-              Rain {daily.precipitation_probability_max?.[index] == null
-                ? "--"
-                : `${Math.round(daily.precipitation_probability_max[index])}%`}
-            </span>
-            {daily.precipitation_sum?.[index] != null && (
-              <span>{Number(daily.precipitation_sum[index]).toFixed(1)} mm</span>
-            )}
-          </article>
-        ))}
-      </div>
-    </section>
-  );
+	return (
+		<section className="forecast-section" aria-labelledby="weekly-forecast-title">
+			<h2 id="weekly-forecast-title">7-day forecast</h2>
+			{days.length ? (
+				<div className="forecast-table-wrap">
+					<table className="forecast-table">
+						<thead>
+							<tr>
+								<th scope="col">Day</th>
+								<th scope="col">Conditions</th>
+								<th scope="col">Low</th>
+								<th scope="col">High</th>
+								<th scope="col">Rainfall</th>
+							</tr>
+						</thead>
+						<tbody>
+							{days.map((day, index) => (
+								<tr key={day}>
+									<th scope="row">{formatDate(day)}</th>
+									<td>{weatherDescriptions[daily.weather_code?.[index]] ?? "Conditions unavailable"}</td>
+									<td>{daily.temperature_2m_min?.[index] ?? "-"}°C</td>
+									<td>{daily.temperature_2m_max?.[index] ?? "-"}°C</td>
+									<td>{daily.precipitation_sum?.[index] ?? "-"} mm</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			) : (
+				<p className="forecast-empty">7-day forecast is not available.</p>
+			)}
+		</section>
+	);
 }
 
 export default WeeklyForecast;

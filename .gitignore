@@ -11,12 +11,6 @@ node_modules
 dist
 dist-ssr
 *.local
-__pycache__/
-*.py[cod]
-.pytest_cache/
-backend/instance/
-.venv/
-venv/
 
 # Editor directories and files
 .vscode/*
@@ -28,3 +22,20 @@ venv/
 *.njsproj
 *.sln
 *.sw?
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Python virtual environments
+.venv/
+backend/.venv/
+
+
+# Environment variables
+.env
+backend/.env
+
+# Flask
+instance/

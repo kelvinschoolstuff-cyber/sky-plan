@@ -1,57 +1,56 @@
-const kmdAgromet = {
-  name: "Kenya Meteorological Department: Agrometeorology",
+const kmdAgrometeorology = {
+  name: "Kenya Meteorological Department (KMD) Agrometeorology",
   url: "https://meteo.go.ke/Services/agrometeorology/",
 };
 
-const kmdWarnings = {
-  name: "Kenya Meteorological Department: Weather Warnings",
-  url: "https://meteo.go.ke/weather-warnings/",
+const faoSoilCover = {
+  name: "FAO Conservation Agriculture: Soil Organic Cover",
+  url: "https://www.fao.org/conservation-agriculture/in-practice/soil-organic-cover/en/",
 };
 
-const faoKenyaBrief = {
-  name: "FAO GIEWS Kenya Country Brief (4 May 2026)",
-  url: "https://www.fao.org/giews/countrybrief/country.jsp?code=KEN",
+const kmdFloodBulletin = {
+  name: "Kenya Meteorological Department (KMD) Flood Bulletin",
+  url: "https://meteo.go.ke/our-products/flood-bulletin/",
 };
 
-const kalroGap = {
-  name: "KALRO Good Agricultural Practices Hub",
-  url: "https://kalrogaps.info/",
+const faoWaterManagement = {
+  name: "FAO Agricultural Water Management",
+  url: "https://www.fao.org/land-water/water/agricultural-water-management/en/",
 };
 
 export const guidanceData = [
   {
     id: "expected-rainfall",
-    title: "Rain is expected",
-    condition: "When your forecast shows rainfall",
-    guidance:
-      "Check the latest county forecast and agrometeorological bulletin for rainfall timing and distribution. Confirm that your field soil is ready before planting; a rain forecast alone does not confirm field conditions.",
-    sources: [kmdAgromet, faoKenyaBrief],
+    title: "Rain expected",
+    advice:
+      "Use local forecasts to plan field work and planting. Check soil moisture before adding irrigation.",
+    source: kmdAgrometeorology,
   },
   {
     id: "dry-conditions",
-    title: "Dry conditions",
-    condition: "When little or no rain is forecast",
-    guidance:
-      "Compare the forecast with soil moisture in your field and seek local extension advice before changing planting or irrigation plans. KMD bulletins include rainfall and soil-moisture information for agricultural planning.",
-    sources: [kmdAgromet, kalroGap],
+    title: "Mostly dry conditions",
+    advice:
+      "Keep suitable crop residues or other organic cover on the soil to help reduce moisture loss.",
+    source: faoSoilCover,
   },
   {
     id: "heavy-rainfall",
-    title: "Heavy rainfall",
-    condition: "When a heavy-rain alert applies to your area",
-    guidance:
-      "Read the current KMD warning and follow its safety instructions. FAO reports that excessive rain can cause waterlogging and crop stress in poorly drained areas; check drainage only when it is safe to do so.",
-    sources: [kmdWarnings, faoKenyaBrief],
+    title: "Heavy rainfall possible",
+    advice:
+      "Check local KMD flood updates, protect people and equipment, and avoid entering flooded areas.",
+    source: kmdFloodBulletin,
   },
   {
-    id: "high-temperatures",
+    id: "high-temperature",
     title: "High temperatures",
-    condition: "When forecast temperatures are unusually high for your crop and area",
-    guidance:
-      "Use the local KMD agrometeorological bulletin and crop-specific KALRO advice together. This app does not set a universal heat threshold or prescribe irrigation amounts.",
-    sources: [kmdAgromet, kalroGap],
+    advice:
+      "Monitor crop and soil moisture, and follow locally recommended water-management practices.",
+    source: faoWaterManagement,
   },
 ];
 
-export const guidanceDisclaimer =
-  "This is general weather-planning information, not a crop-specific recommendation. Forecasts can change; consult current county advisories and a local agricultural extension expert.";
+export const guidanceThresholds = {
+  dryDailyRainfallMm: 1,
+  heavyDailyRainfallMm: 20,
+  highTemperatureC: 30,
+};
