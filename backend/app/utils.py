@@ -1,9 +1,6 @@
-from functools import wraps
+from flask import jsonify
 
-from flask import g, jsonify, session
-
-from app.extensions import db
-from app.models import User
+from app.routes.auth import login_required
 
 def error_response(message, status):
 	return jsonify({"error": message}), status
@@ -52,23 +49,3 @@ def parse_positive_int(value):
 		return None
 	
 	return number
-
-def login_required(view):
-	@wraps(view)
-	def wrapped_view(*args, **kwargs):
-		user_id = session.get("user_id")
-
-		if isinstance(user_id, bool) or not isinstance(user_id, int):
-			return error_response("Authentication required", 401)
-		
-		user = db.session.get(User, user_id)
-
-		if user is None:
-			session.clear()
-			return error_response("Authentication required", 401)
-		
-		g.current_user = user
-
-		return view(*args, **kwargs)
-	
-	return wrapped_view

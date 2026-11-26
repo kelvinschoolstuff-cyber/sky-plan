@@ -32,10 +32,10 @@ __pycache__/
 .venv/
 backend/.venv/
 
-
 # Environment variables
 .env
-backend/.env
+.env.*
+!.env.example
 
 # Flask
 instance/

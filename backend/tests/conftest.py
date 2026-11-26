@@ -1,5 +1,9 @@
-import pytest
 import os
+
+os.environ["DATABASE_URL"] = "sqlite:///:memory:"
+os.environ["SECRET_KEY"] = "test-secret-key"
+
+import pytest
 from app import create_app
 from app.extensions import db
 from app.models import Crop, CropCalendar, Farm, Source, User
@@ -7,17 +11,15 @@ from app.models import Crop, CropCalendar, Farm, Source, User
 
 @pytest.fixture()
 def app():
-    # 1. Monkeypatch the environment variables BEFORE the app is created
-    # This forces it to use in-memory SQLite instead of PostgreSQL
-    os.environ["DATABASE_URL"] = "sqlite:///:memory:"
-    os.environ["SQLALCHEMY_DATABASE_URI"] = "sqlite:///:memory:"
-    os.environ["SECRET_KEY"] = "test-secret-key"
-
-    # 2. Call the factory exactly as it expects (with no arguments)
-    app = create_app()
+    app = create_app(
+        {
+            "TESTING": True,
+            "SECRET_KEY": "test-secret-key",
+            "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
+            "SESSION_COOKIE_SECURE": False,
+        }
+    )
     
-    # 3. Ensure testing mode is on
-    app.config["TESTING"] = True
     
     with app.app_context():
         db.create_all()

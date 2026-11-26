@@ -2,10 +2,11 @@ from datetime import date
 import math
 import re
 
-from flask import Blueprint, g, jsonify, request, session
+from flask import Blueprint, g, jsonify, request
 
 from app.extensions import db
 from app.models import Crop, Farm, PlantingPlan
+from app.routes.auth import login_required
 from sqlalchemy.exc import SQLAlchemyError
 
 bp = Blueprint("planting_plans", __name__, url_prefix="/api")
@@ -43,12 +44,9 @@ def _commit_changes():
 
 
 @bp.before_request
+@login_required
 def require_login():
-    user_id = session.get("user_id")
-    # bools are ints in Python, so check for them separately
-    if isinstance(user_id, bool) or not isinstance(user_id, int):
-        return _error("Authentication required", 401)
-    g.user_id = user_id
+    g.user_id = g.current_user.id
 
 
 def _owned_farm(farm_id):
