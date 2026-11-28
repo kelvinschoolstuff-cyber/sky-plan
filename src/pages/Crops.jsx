@@ -24,7 +24,7 @@ function Crops() {
   return (
     <section className="page-section">
       <h2>Crop information</h2>
-      <p>Explore crop information and growing requirments.</p>
+      <p>Explore crop information and growing requirements.</p>
 
       {loading && <p>Loading crops...</p>}
 
@@ -50,7 +50,7 @@ function Crops() {
                 {crop.suitable_temperature || "Not available"}
               </p>
               <p>
-                <strong>Rainfall requirments:</strong>{" "}
+                <strong>Rainfall requirements:</strong>{" "}
                 {crop.rainfall_requirements || "Not available"}
               </p>
               <p>
@@ -59,7 +59,7 @@ function Crops() {
               </p>
               <p>
                 <strong>Water requirements:</strong>{" "}
-                {crop.water_requirments || "Not available"}
+                {crop.water_requirements || "Not available"}
               </p>
               <p>
                 <strong>Management practices:</strong>{" "}

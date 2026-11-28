@@ -6,7 +6,9 @@ import {
   updatePlantingPlan,
 } from "../services/PlantingPlansApi";
 import { getFarms } from "../services/FarmsApi";
-import getCrops from "../services/CropApi";
+import { getCrops } from "../services/CropApi";
+
+const PLANS_PER_PAGE = 10;
 
 const emptyForm = {
   farm_id: "",
@@ -25,6 +27,8 @@ function PlantingPlans() {
   const [crops, setCrops] = useState([]);
   const [formData, setFormData] = useState(emptyForm);
   const [editingPlanId, setEditingPlanId] = useState(null);
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState({ page: 1, pages: 0, total: 0 });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -32,15 +36,28 @@ function PlantingPlans() {
 
   const loadData = useCallback(async () => {
     try {
-      setError("");
-
       const [plansResponse, farmsResponse, cropsResponse] = await Promise.all([
-        getPlantingPlans(),
+        getPlantingPlans({ page, per_page: PLANS_PER_PAGE }),
         getFarms(),
         getCrops(),
       ]);
 
-      setPlans(plansResponse.data || []);
+      const loadedPlans = plansResponse.data || [];
+
+      // Deleting the last plan on a page leaves it empty: go back one page.
+      if (loadedPlans.length === 0 && page > 1) {
+        setPage(page - 1);
+        return;
+      }
+
+      setPlans(loadedPlans);
+      setPagination(
+        plansResponse.pagination || {
+          page,
+          pages: 1,
+          total: loadedPlans.length,
+        },
+      );
       setFarms(farmsResponse.data || []);
       setCrops(cropsResponse.data || []);
     } catch (err) {
@@ -48,9 +65,18 @@ function PlantingPlans() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [page]);
+
+  function goToPage(nextPage) {
+    setError("");
+    setMessage("");
+    setLoading(true);
+    setPage(nextPage);
+  }
 
   useEffect(() => {
+    // Loads data after mount; state is only set after the request resolves.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadData();
   }, [loadData]);
 
@@ -127,7 +153,7 @@ function PlantingPlans() {
 
     try {
       const response = await deletePlantingPlan(planId);
-      setMessage(response.message || "Planting plan added successfully.");
+      setMessage(response.message || "Planting plan deleted successfully.");
 
       if (editingPlanId === planId) {
         setEditingPlanId(null);
@@ -176,6 +202,7 @@ function PlantingPlans() {
               name="farm_id"
               value={formData.farm_id}
               onChange={handleChange}
+              disabled={Boolean(editingPlanId)}
               required
             >
               <option value="">Select a Farm</option>
@@ -325,6 +352,31 @@ function PlantingPlans() {
             </article>
           ))}
         </div>
+      )}
+
+      {pagination.pages > 1 && (
+        <nav aria-label="Planting plan pages">
+          <button
+            type="button"
+            disabled={page <= 1 || loading}
+            onClick={() => goToPage(page - 1)}
+          >
+            Previous
+          </button>
+
+          <span>
+            {" "}
+            Page {pagination.page} of {pagination.pages}{" "}
+          </span>
+
+          <button
+            type="button"
+            disabled={page >= pagination.pages || loading}
+            onClick={() => goToPage(page + 1)}
+          >
+            Next
+          </button>
+        </nav>
       )}
     </section>
   );

@@ -25,7 +25,6 @@ function Farms() {
 
   const loadFarms = useCallback(async () => {
     try {
-      setError("");
       const response = await getFarms();
       setFarms(response.data || []);
     } catch (err) {
@@ -36,6 +35,8 @@ function Farms() {
   }, []);
 
   useEffect(() => {
+    // Loads data after mount; state is only set after the request resolves.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadFarms();
   }, [loadFarms]);
 
@@ -142,6 +143,18 @@ function Farms() {
         </div>
 
         <div>
+          <label htmlFor="farm-location">Location</label>
+          <input
+            id="farm-location"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            required
+            maxLength={150}
+          />
+        </div>
+
+        <div>
           <label htmlFor="farm-county">County</label>
           <input
             id="farm-county"
@@ -160,7 +173,6 @@ function Farms() {
             name="agroecological_zone"
             value={formData.agroecological_zone}
             onChange={handleChange}
-            required
             maxLength={120}
           />
         </div>

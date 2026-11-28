@@ -1,0 +1,166 @@
+/* Login, signup and the header's account controls.
+   Uses the existing AgriCast green palette. */
+
+.auth-page {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 48px 16px;
+  background: #f5f8f5;
+  box-sizing: border-box;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  height: fit-content;
+  padding: 28px;
+  background: #ffffff;
+  border: 1px solid #e1e9e2;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(27, 67, 50, 0.08);
+  text-align: center;
+}
+
+.auth-card h1 {
+  margin: 0;
+  color: #1b4332;
+  font-size: 1.8rem;
+}
+
+.auth-card h2 {
+  margin: 6px 0 20px;
+  color: #34463c;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.auth-form label {
+  color: #34463c;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.auth-form input {
+  padding: 10px 12px;
+  border: 1px solid #cfdcd2;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.auth-form input:focus-visible,
+.auth-form button:focus-visible {
+  outline: 3px solid #95d5b2;
+  outline-offset: 1px;
+}
+
+.auth-form small {
+  color: #718078;
+}
+
+.auth-form button {
+  margin-top: 10px;
+  padding: 11px 16px;
+  border: 1px solid #1b4332;
+  border-radius: 8px;
+  background: #1b4332;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-form button:hover:not(:disabled) {
+  background: #2d6a4f;
+}
+
+.auth-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.auth-error,
+.auth-notice {
+  margin: 6px 0 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.auth-error {
+  background: #fcebeb;
+  border-left: 4px solid #c0504d;
+  color: #8a2f2c;
+}
+
+.auth-notice {
+  margin-bottom: 14px;
+  background: #edf5ed;
+  border-left: 4px solid #40916c;
+  color: #1b4332;
+}
+
+.auth-switch {
+  margin: 18px 0 0;
+  color: #718078;
+  font-size: 0.9rem;
+}
+
+.auth-switch a {
+  color: #2d6a4f;
+  font-weight: 600;
+}
+
+.auth-loading {
+  padding: 40px 16px;
+  color: #718078;
+  text-align: center;
+}
+
+/* Account controls in the header (MainLayout) */
+.nav-account {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.app-header .nav-account p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.nav-logout {
+  padding: 6px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 20px;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.nav-logout:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.nav-logout:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.app-header .nav-error {
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #fcebeb;
+  color: #8a2f2c;
+  font-size: 0.85rem;
+}

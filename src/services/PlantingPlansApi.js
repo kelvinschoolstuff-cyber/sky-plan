@@ -13,7 +13,7 @@ export function getPlantingPlans(filters = {}) {
 }
 
 export function getPlantingPlan(planId) {
-  return apiRequest(`api/planting-plans/${planId}`);
+  return apiRequest(`/api/planting-plans/${planId}`);
 }
 
 export function createPlantingPlan(farmId, planData) {

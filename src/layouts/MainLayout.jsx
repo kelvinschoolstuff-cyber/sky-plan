@@ -1,7 +1,30 @@
-import { Outlet, NavLink } from "react-router-dom";
+import { useState } from "react";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
+
+import { useAuth } from "../context/AuthContext";
 import "../App.css";
+import "../pages/Auth.css";
 
 function MainLayout() {
+  const { user, isAuthenticated, loading, logout } = useAuth();
+  const navigate = useNavigate();
+  const [loggingOut, setLoggingOut] = useState(false);
+  const [logoutError, setLogoutError] = useState("");
+
+  async function handleLogout() {
+    setLoggingOut(true);
+    setLogoutError("");
+
+    try {
+      await logout();
+      navigate("/login", { replace: true });
+    } catch (err) {
+      // The server session may still be active, so stay signed in.
+      setLogoutError(err.message || "Could not log out. Please try again.");
+      setLoggingOut(false);
+    }
+  }
+
   return (
     <div className="app">
       <header className="app-header">
@@ -47,6 +70,34 @@ function MainLayout() {
             Planting Plans
           </NavLink>
         </nav>
+
+        {!loading && (
+          <div className="nav-account">
+            {isAuthenticated ? (
+              <>
+                <p>Signed in as {user.username}</p>
+                <button
+                  type="button"
+                  className="nav-logout"
+                  onClick={handleLogout}
+                  disabled={loggingOut}
+                >
+                  {loggingOut ? "Logging out..." : "Log out"}
+                </button>
+              </>
+            ) : (
+              <>
+                <NavLink to="/login">Log in</NavLink>
+                <NavLink to="/signup">Sign up</NavLink>
+              </>
+            )}
+            {logoutError && (
+              <p className="nav-error" role="alert">
+                {logoutError}
+              </p>
+            )}
+          </div>
+        )}
       </header>
 
       <main>

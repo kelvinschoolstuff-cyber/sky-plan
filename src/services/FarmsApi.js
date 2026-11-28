@@ -19,7 +19,7 @@ export function updateFarm(farmId, farmData) {
 }
 
 export function deleteFarm(farmId) {
-  return apiRequest(`api/farms/${farmId}`, {
+  return apiRequest(`/api/farms/${farmId}`, {
     method: "DELETE",
   });
 }
