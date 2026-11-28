@@ -6,7 +6,7 @@ import {
   updatePlantingPlan,
 } from "../services/PlantingPlansApi";
 import { getFarms } from "../services/FarmsApi";
-import getCrops from "../services/CropApi";
+import { getCrops } from "../services/CropApi";
 
 const PLANS_PER_PAGE = 10;
 
