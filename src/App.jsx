@@ -6,8 +6,6 @@ import Dashboard from "./pages/Dashboard";
 import Weather from "./pages/Weather";
 import PlantingCalendar from "./pages/PlantingCalendar";
 import Crops from "./pages/Crops";
-
-command to add these
 import Farms from "./pages/Farms";
 import PlantingPlans from "./pages/PlantingPlans";
 import Login from "./pages/Login";
